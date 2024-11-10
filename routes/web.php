@@ -12,16 +12,14 @@ use App\Http\Controllers\UOMController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseItemController;
+use App\Http\Controllers\SiteController;
 use App\Models\ItemArrival;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
@@ -60,5 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/out/search', [ItemOutController::class, 'searchData']);
 
 
+
+    Route::resource('sites', SiteController::class);
 
 });

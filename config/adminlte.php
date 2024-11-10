@@ -31,7 +31,7 @@ return [
     */
 
     'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'use_full_favicon' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -301,24 +301,26 @@ return [
         [
             'text' => 'Gudang',
             'route' => 'warehouse.index',
-            'icon' => 'fas fa-fw fa-warehouse'
+            'icon' => 'fas fa-fw fa-warehouse',
+            'can' => ['warehouse-list'],
         ],
         [
-            'text' => 'Satuan Unit',
+            'text'  => 'Satuan Unit',
             'route' => 'uoms.index',
-            'icon' => 'fas fa-fw fa-ruler'
-            
+            'icon'  => 'fas fa-fw fa-ruler',
+            'can'   => ['uom-list'],
         ],
         [
             'text'  => 'Kategori Barang',
             'route' => 'categories.index',
-            'icon'  => 'fas fa-fw fa-th-list'
+            'icon'  => 'fas fa-fw fa-th-list',
+            'can'   => ['category-list']
         ],
         [
             'text'  =>  'List Barang',
             'route' =>  'items.index',
-            'icon'  =>  'fas fa-fw fa-boxes'
-            
+            'icon'  =>  'fas fa-fw fa-boxes',
+            'can'   => ['item-list'],
         ],
         ['header' => 'Transaksi'],
         [
@@ -340,7 +342,7 @@ return [
         [
             'text'  =>  'Barang Keluar',
             'route' =>  'out.index',
-            'icon'  =>  'fas fa-fw fa-dolly'            
+            'icon'  =>  'fas fa-fw fa-dolly'
         ],
         ['header' => 'Laporan'],
         [
@@ -359,12 +361,12 @@ return [
         [
             'text' => 'Barang Keluar',
             'route' => 'out.history',
-            'icon'  =>  'fas fa-fw fa-file-export'            
+            'icon'  =>  'fas fa-fw fa-file-export'
         ],
         [
             'text' => 'Export Laporan',
             'route' => 'report.index',
-            'icon'  =>  'fas fa-fw fa-file-alt'            
+            'icon'  =>  'fas fa-fw fa-file-alt'
         ],
         ['header' => 'User Management'],
         [
@@ -379,6 +381,14 @@ return [
             'icon'  => 'fas fa-fw fa-user-shield',
             'route' => 'roles.index',
             'can' => ['role-list'],
+        ],
+        ['header' => 'Setting'],
+        [
+            'key' => 'Perusahaan',
+            'text' => 'Perusahaan',
+            'icon' => 'fas fa-fw fa-users',
+            'route' => 'sites.index',
+            'can' => ['setting-update'],
         ],
     ],
 

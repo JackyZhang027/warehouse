@@ -7,11 +7,13 @@ use App\Models\Item;
 use App\Models\MaterialRequest;
 use App\Models\MaterialRequestItem;
 use App\Models\Warehouse;
+use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Mpdf\Mpdf;
+use Illuminate\Support\Facades\Cache;
 
 class MaterialRequestController extends Controller
 {
@@ -288,6 +290,9 @@ class MaterialRequestController extends Controller
 
     public function export($id, $type)
     {
+        $logo = Cache::remember('site_logo', 60 * 24, function () {
+            return Site::first()->logo_path ?? 'storage/images/logo.png';
+        });
         $data = MaterialRequest::findOrFail($id);
         if($type == 'EXCEL'){
             return Excel::download(new MaterialRequestExport($data), 'SPM.xlsx');
@@ -304,7 +309,7 @@ class MaterialRequestController extends Controller
             ]);
             $mpdf->showImageErrors = true;
             $mpdf->SetCompression(false);
-            $mpdf->imageVars['logo'] = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/storage/images/logo.png');
+            $mpdf->imageVars['logo'] = file_get_contents($_SERVER['DOCUMENT_ROOT'] .'/storage/'. $logo);
             // dd(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/storage/images/logo.png'));
             // Write the HTML content to the PDF
             $html = view('report.PDF.spm', ['spm'=>$data])->render();

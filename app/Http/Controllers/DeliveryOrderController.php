@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Mpdf\Mpdf;
+use Illuminate\Support\Facades\Cache;
 
 class DeliveryOrderController extends Controller
 {
@@ -342,6 +343,9 @@ class DeliveryOrderController extends Controller
     
     public function export($id, $type)
     {
+        $logo = Cache::remember('site_logo', 60 * 24, function () {
+            return Site::first()->logo_path ?? 'storage/images/logo.png';
+        });
         $data = DeliveryOrder::findOrFail($id);
         if($type == 'EXCEL'){
             return Excel::download(new DeliveryOrderExport($data), 'Surat Jalan.xlsx');
@@ -356,7 +360,7 @@ class DeliveryOrderController extends Controller
                 'debug' => true, // Enable debugging
             ]);
             
-            $mpdf->imageVars['logo'] = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/storage/images/logo.png');
+            $mpdf->imageVars['logo'] = file_get_contents($_SERVER['DOCUMENT_ROOT'] .'/storage/'. $logo);
             // Write the HTML content to the PDF
             $html = view('report.PDF.sj', ['sj'=>$data])->render();
             $mpdf->WriteHTML($html);
