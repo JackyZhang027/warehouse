@@ -1,0 +1,64 @@
+<?php
+
+use App\Http\Controllers\DeliveryOrderController;
+use App\Http\Controllers\ItemArrivalController;
+use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemOutController;
+use App\Http\Controllers\MaterialRequestController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UOMController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\WarehouseItemController;
+use App\Models\ItemArrival;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('warehouse', WarehouseController::class);
+    Route::resource('uoms', UOMController::class);
+    Route::resource('categories', ItemCategoryController::class);
+    Route::resource('items', ItemController::class);
+    Route::resource('material', MaterialRequestController::class);
+    Route::get('/delivery/list', [DeliveryOrderController::class, 'list'])->name('delivery.list');
+    Route::get('/delivery/{id}/warehouse', [DeliveryOrderController::class, 'deliveryByWarehouse'])->name('delivery.warehouse');
+    Route::resource('delivery', DeliveryOrderController::class);
+    
+    
+    Route::resource('arrival', ItemArrivalController::class);
+    Route::resource('out', ItemOutController::class);
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::post('/report/generate', [ReportController::class, 'generate'])->name('report.generate');
+    Route::get('/history', [ItemOutController::class, 'history'])->name('out.history');
+
+
+    Route::get('/material/export/{id}/{type}', [MaterialRequestController::class, 'export'])->name('material.export');
+    Route::get('/material/warehouse/list', [MaterialRequestController::class, 'listByWarehouse'])->name('material.warehouse.list');
+    Route::get('/material/item/list', [MaterialRequestController::class, 'itemListByMaterialRequest'])->name('material.item.list');
+    Route::post('/delivery/{id}/items/store', [DeliveryOrderController::class, 'storeItems'])->name('delivery.items.store');
+    Route::delete('/delivery/{id}/item/destroy', [DeliveryOrderController::class, 'destroyItems'])->name('delivery.item.destroy');
+    Route::post('/out/{id}/items/store', [ItemOutController::class, 'storeItems'])->name('out.items.store');
+    Route::delete('/out/{id}/item/destroy', [ItemOutController::class, 'destroyItems'])->name('out.item.destroy');
+    Route::get('/delivery/export/{id}/{type}', [DeliveryOrderController::class, 'export'])->name('delivery.export');
+    Route::post('/get-delivery-items', [DeliveryOrderController::class, 'getDeliveryItems'])->name('getDeliveryItems');
+    
+
+    Route::get('/search-items', [WarehouseItemController::class, 'searchItems'])->name('warehouse.items.search');
+
+    Route::post('/arrival/search', [ItemArrivalController::class, 'searchData']);
+    Route::post('/out/search', [ItemOutController::class, 'searchData']);
+
+
+
+});
