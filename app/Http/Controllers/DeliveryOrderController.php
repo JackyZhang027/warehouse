@@ -8,6 +8,7 @@ use App\Models\DeliveryOrderItem;
 use App\Models\MaterialRequest;
 use App\Models\MaterialRequestItem;
 use App\Models\Warehouse;
+use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
@@ -47,7 +48,7 @@ class DeliveryOrderController extends Controller
                 }
                 
                 if (auth()->user()->can('item-delete')) {
-                    $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblMaterialRequest\')"><i class="fas fa-trash-alt"></i> </button>';
+                    $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblDeliveryOrder\')"><i class="fas fa-trash-alt"></i> </button>';
                 }
                 return $editBtn.$deleteBtn;
             })
@@ -336,9 +337,17 @@ class DeliveryOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DeliveryOrder $deliveryOrder)
+    public function destroy($id)
     {
-        //
+        try {
+            // Delete the delivery order
+            DeliveryOrder::find($id)->delete();
+            return response()->json(['success'=>true, 'msg' => 'Surat Jalan berhasil dihapus!', 200]);
+    
+        } catch (\Exception $e) {
+            return response()->json(['success'=>false, 'msg' => 'Gagal menghapus surat jalan!'. $e, 400]);
+        }
+    
     }
     
     public function export($id, $type)

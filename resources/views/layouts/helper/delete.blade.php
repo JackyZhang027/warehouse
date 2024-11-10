@@ -18,22 +18,31 @@
                         _method: 'DELETE'
                     },
                     success: function(response) {
-                        if(table != ''){
-                            $('#' + table).DataTable().ajax.reload();
-                            Swal.fire(
-                                'Deleted!',
-                                'Your record has been deleted.',
-                                'success'
-                            )
+                        console.log(response)
+                        if (response.success){
+                            if(table != ''){
+                                $('#' + table).DataTable().ajax.reload();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your record has been deleted.',
+                                    'success'
+                                )
+                            }else{
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your record has been deleted.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload()
+                                });
+
+                            }
                         }else{
                             Swal.fire(
-                                'Deleted!',
-                                'Your record has been deleted.',
-                                'success'
-                            ).then(() => {
-                                location.reload()
-                            });
-
+                                'Error!',
+                                'There was a problem deleting the record.',
+                                'error'
+                            )
                         }
 
                     },

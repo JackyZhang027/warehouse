@@ -295,6 +295,12 @@ return [
 
     'menu' => [
         // Navbar items:
+        [
+            'text' => 'Dashboard',
+            'route' => 'home',
+            'icon' => 'fas fa-fw fa-home',
+            'can' => ['warehouse-list'],
+        ],
 
         // Sidebar items:
         ['header' => 'Master Data'],
