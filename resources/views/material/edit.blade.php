@@ -51,20 +51,20 @@
             <table id="tblItem" class="table table-bordered data-table table-striped" style="width: 100%">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th rowspan="2" style="min-width: 35vw">Material</th>
-                        <th rowspan="2">Qty</th>
-                        <th rowspan="2">Satuan</th>
-                        <th rowspan="2">Tanggal dibutuhkan</th>
-                        <th rowspan="2">No. BOQ</th>
-                        <th colspan="5" class="text-center">Keperluan</th>
-                        <th rowspan="2"></th>
+                        <th rowspan="2" style="min-width: 35%; width: 35%;">Material</th>
+                        <th rowspan="2" style="width: 10%;">Qty</th>
+                        <th rowspan="2" style="width: 10%;">Satuan</th>
+                        <th rowspan="2" style="width: 10%;">Tanggal dibutuhkan</th>
+                        <th rowspan="2" style="width: 10%;">No. BOQ</th>
+                        <th colspan="5" class="text-center" style="width: 25%;">Keperluan</th>
+                        <th rowspan="2" style="width: 5%;"></th>
                     </tr>
                     <tr>
-                        <th>M</th>
-                        <th>T</th>
-                        <th>HE</th>
-                        <th>C</th>
-                        <th>O</th>
+                        <th style="width: 5%;">M</th>
+                        <th style="width: 5%;">T</th>
+                        <th style="width: 5%;">HE</th>
+                        <th style="width: 5%;">C</th>
+                        <th style="width: 5%;">O</th>
                     </tr>
                 </thead>
                 <tbody>
