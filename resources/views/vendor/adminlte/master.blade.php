@@ -61,6 +61,12 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
+    <style>
+        .select2-container .select2-selection--single{
+            height:auto;
+            width: 100%;
+        }
+    </style>
 
 </head>
 

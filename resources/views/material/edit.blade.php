@@ -92,16 +92,32 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" value="{{ $item->id }}" name="item_id[]"/>
                             </td>
                             <td><input type="text" class="form-control qty" name="qty[]" value="{{ $item->qty }}" required @readonly($is_readonly)></td>
                             <td><input type="text" class="form-control uom" name="uom[]" value="{{ $item->item->uom->name }}" disabled></td>
                             <td><input type="date" class="form-control" name="date_needed[]" value="{{ $item->date_needed }}" required></td>
                             <td><input type="text" class="form-control" name="boq[]" value="{{ $item->boq_code }}"></td>
-                            <td><input type="checkbox" name="check_m[]" {{ $item->check_m ? 'checked' : '' }}></td>
-                            <td><input type="checkbox" name="check_t[]" {{ $item->check_t ? 'checked' : '' }}></td>
-                            <td><input type="checkbox" name="check_he[]" {{ $item->check_he ? 'checked' : '' }}></td>
-                            <td><input type="checkbox" name="check_c[]" {{ $item->check_c ? 'checked' : '' }}></td>
-                            <td><input type="checkbox" name="check_o[]" {{ $item->check_o ? 'checked' : '' }}></td>
+                            <td>
+                                <input type="hidden" name="check_m[{{ $index }}]" value="0">
+                                <input type="checkbox" name="check_m[{{ $index }}]" value="1" {{ $item->check_m ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                <input type="hidden" name="check_t[{{ $index }}]" value="0">
+                                <input type="checkbox" name="check_t[{{ $index }}]" value="1" {{ $item->check_t ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                <input type="hidden" name="check_he[{{ $index }}]" value="0">
+                                <input type="checkbox" name="check_he[{{ $index }}]" value="1" {{ $item->check_he ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                <input type="hidden" name="check_c[{{ $index }}]" value="0">
+                                <input type="checkbox" name="check_c[{{ $index }}]" value="1" {{ $item->check_c ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                <input type="hidden" name="check_o[{{ $index }}]" value="0">
+                                <input type="checkbox" name="check_o[{{ $index }}]" value="1" {{ $item->check_o ? 'checked' : '' }}>
+                            </td>
                             <td>
                                 @if ($item->do_qty <= 0)
                                     <span class="delete-row"><i class="fas fa-trash"></i></span>    
@@ -141,35 +157,20 @@
 
 @section('js')
 <script>
-    $(document).ready(function() {
-        let items = @json($items); // Assuming $items is passed from the backend
+   // Get CSRF token from meta tag
+   var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        function populateDropdown(selectElement) {
-            console.log(items)
-            if (selectElement.children('option').length > 1) return; // Prevent resetting existing dropdowns
-            selectElement.append('<option value="">Pilih Material</option>');
-            $.each(items, function(index, item) {
-                selectElement.append('<option value="' + item.id + '" data-uom="' + item.uom.name + '">' + item.code + ' - ' + item.name + '</option>');
-            });
+    // Add CSRF token to AJAX requests
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
         }
-
-        // Populate only new dropdowns on page load
-        $('.item-select').each(function() {
-            populateDropdown($(this));
-            let selectedItem = $(this).data('selected-item');
-            if (selectedItem) {
-                $(this).val(selectedItem).trigger('change');
-            }
-        });
-
-
-        let rowIndex = $('#tblItem tbody tr').length / 2;
-
+    });
+    $(document).ready(function() {
         $('#addRow').on('click', function() {
-            rowIndex++;
             let newRow = `
                 <tr>
-                    <td>
+                    <td>    
                         <select class="form-control item-select" name="items[]" required>
                             <!-- Options will be dynamically populated -->
                         </select>
@@ -178,53 +179,94 @@
                     <td><input type="text" class="form-control uom" name="uom[]" disabled></td>
                     <td><input type="date" class="form-control" name="date_needed[]" required></td>
                     <td><input type="text" class="form-control" name="boq[]"></td>
-                    <td><input type="checkbox" name="check_m[]"></td>
-                    <td><input type="checkbox" name="check_t[]"></td>
-                    <td><input type="checkbox" name="check_he[]"></td>
-                    <td><input type="checkbox" name="check_c[]"></td>
-                    <td><input type="checkbox" name="check_o[]"></td>
+                    <td><input type="hidden" name="check_m[]" value="0"> <input type="checkbox" name="check_m[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_t[]" value="0"> <input type="checkbox" name="check_t[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_he[]" value="0"> <input type="checkbox" name="check_he[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_c[]" value="0"> <input type="checkbox" name="check_c[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_o[]" value="0"> <input type="checkbox" name="check_o[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
                     <td><span class="delete-row"><i class="fas fa-trash"></i></span></td>
                 </tr>
                 <tr>
                     <td colspan="10">
-                        Deskripsi
+                        Description
                         <textarea class="form-control" name="description[]"></textarea>
                     </td>
                 </tr>`;
             $('#tblItem tbody').append(newRow);
-            populateDropdown($('#tblItem tbody tr').eq(-2).find('.item-select'));
-            $('.item-select').trigger('change');
+
+            initializeSelect2(); 
+
         });
-
+        
         $(document).on('change', '.item-select', function() {
-            let selectedItems = [];
-            $('.item-select').each(function() {
-                if ($(this).val() !== "") {
-                    selectedItems.push($(this).val());
-                }
-            });
-
-            $('.item-select').each(function() {
-                let currentValue = $(this).val();
-                $(this).find('option').each(function() {
-                    if ($(this).val() !== "" && $(this).val() !== currentValue && selectedItems.includes($(this).val())) {
-                        $(this).prop('disabled', true);
-                    } else {
-                        $(this).prop('disabled', false);
-                    }
-                });
-            });
-
-            let selectedItem = $(this).find('option:selected');
-            let uom = selectedItem.data('uom') || '';
+            let selectedItem = $(this).select2('data')[0];
+            let uom = selectedItem.uom || ''; 
+            console.log(selectedItem)
             $(this).closest('tr').find('.uom').val(uom);
         });
-
+        
         $(document).on('click', '.delete-row', function() {
             $(this).closest('tr').next('tr').remove();
             $(this).closest('tr').remove();
-            updateRowNumbers();
-            $('.item-select').trigger('change');
+            initializeSelect2();
+        });
+        initializeSelect2()
+    });
+    function initializeSelect2() {
+        $('.item-select').select2({
+            placeholder: 'Search for an item',
+            ajax: {
+                url: '{{ route('items.search') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
+
+                templateResult: function (item) {
+                    if (!item.id) return item.text;
+
+                    // Create the dropdown template with the new format
+                    var result = $('<span>' +
+                        '<strong>' + item.code + ' - ' + item.name + '</strong><br/>' + 
+                        '<small>' + item.description + '</small>' + 
+                        '</span>');
+
+                    result.attr('data-uom', item.uom || '');
+
+                    return result;
+                },
+                templateSelection: function (item) {
+                    return item.name || item.id;
+                },
+
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+        
+    }
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+            if (!checkbox.checked) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = checkbox.name;
+                hiddenInput.value = '0';
+                checkbox.parentNode.appendChild(hiddenInput);
+            }
         });
     });
 </script>

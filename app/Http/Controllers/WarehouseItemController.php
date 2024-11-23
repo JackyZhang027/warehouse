@@ -11,7 +11,7 @@ class WarehouseItemController extends Controller
     {
         $keyword = $request->input('keyword');
         
-        $items = WarehouseItem::with(['item', 'item.uom']) // Assuming there's a relationship to get item details
+        $items = WarehouseItem::with(['item', 'item.uom'])
                     ->whereHas('item', function($query) use ($keyword) {
                         $query->where('name', 'like', '%' . $keyword . '%')
                             ->orWhere('code', 'like', '%' . $keyword . '%');

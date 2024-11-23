@@ -30,46 +30,45 @@ class DeliveryOrderController extends Controller
             }
             $data->with(['warehouse:id,owner,project', 'createUser:id,name']);
             
-
             return Datatables::of($data)
-            ->addIndexColumn()
-            ->editColumn('warehouse_id', function ($row) {
-                return $row->warehouse->project;
-            })
-            ->editColumn('created_by', function ($row) {
-                return $row->createUser->name;
-            })
-            ->addColumn('action', function($row){
-                $editBtn = '';
-                $deleteBtn = '';
-                
-                if (auth()->user()->can('item-edit')) {
-                    $editBtn = '<a href="'. route('delivery.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
-                }
-                
-                if (auth()->user()->can('item-delete')) {
-                    $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblDeliveryOrder\')"><i class="fas fa-trash-alt"></i> </button>';
-                }
-                return $editBtn.$deleteBtn;
-            })
-            ->filterColumn('warehouse_id', function($query, $keyword) {
-                $query->whereHas('warehouse', function($q) use ($keyword) {
-                    $q->whereRaw('LOWER(project) LIKE ?', ["%$keyword%"]);
-                });
-            })
-            ->filterColumn('created_by', function($query, $keyword) {
-                $query->whereHas('createUser', function($q) use ($keyword) {
-                    $q->whereRaw('LOWER(name) LIKE ?', ["%$keyword%"]);
-                });
-            })
-            ->orderColumn('warehouse_id', function ($query, $order) {
-                $query->orderBy('warehouses.project', $order == 'desc' ? 'asc' : 'desc');
-            })
-            ->orderColumn('created_by', function ($query, $order) {
-                $query->orderBy('users.name', $order == 'desc' ? 'asc' : 'desc');
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('warehouse_id', function ($row) {
+                    return $row->warehouse->project;
+                })
+                ->editColumn('created_by', function ($row) {
+                    return $row->createUser->name;
+                })
+                ->addColumn('action', function($row){
+                    $editBtn = '';
+                    $deleteBtn = '';
+                    
+                    if (auth()->user()->can('item-edit')) {
+                        $editBtn = '<a href="'. route('delivery.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
+                    }
+                    
+                    if (auth()->user()->can('item-delete')) {
+                        $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblDeliveryOrder\')"><i class="fas fa-trash-alt"></i> </button>';
+                    }
+                    return $editBtn.$deleteBtn;
+                })
+                ->filterColumn('warehouse_id', function($query, $keyword) {
+                    $query->whereHas('warehouse', function($q) use ($keyword) {
+                        $q->whereRaw('LOWER(project) LIKE ?', ["%$keyword%"]);
+                    });
+                })
+                ->filterColumn('created_by', function($query, $keyword) {
+                    $query->whereHas('createUser', function($q) use ($keyword) {
+                        $q->whereRaw('LOWER(name) LIKE ?', ["%$keyword%"]);
+                    });
+                })
+                ->orderColumn('warehouse_id', function ($query, $order) {
+                    $query->orderBy('warehouses.project', $order == 'desc' ? 'asc' : 'desc');
+                })
+                ->orderColumn('created_by', function ($query, $order) {
+                    $query->orderBy('users.name', $order == 'desc' ? 'asc' : 'desc');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
         $user = auth()->user();
         if ($user && $user->hasRole('Super Admin')) {

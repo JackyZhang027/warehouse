@@ -7,6 +7,7 @@ use App\Models\ItemCategory;
 use App\Models\UOM;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
@@ -141,4 +142,35 @@ class ItemController extends Controller
         Item::find($id)->delete();
         return response()->json(['success'=>true, 'msg' => 'Item deleted successfully!']);
     }
+
+    public function searchItems(Request $request)
+    {
+        $search = $request->get('q');
+        $page = $request->get('page', 1);
+        $perPage = 10;
+
+        $items = Item::query()
+            ->where('name', 'like', '%' . $search . '%')
+            ->orWhere('code', 'like', '%' . $search . '%')
+            ->paginate($perPage);
+
+        return response()->json([
+            'items' => $items->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'code' => $item->code,
+                    'text' => $item->code . ' - ' . $item->name,
+                    'description' => $item->description,
+                    'uom' => $item->uom->name ?? 'N/A' 
+                ];
+            }),
+            'pagination' => [
+                'more' => $items->hasMorePages()
+            ]
+        ]);
+    }
+
+
+
+
 }

@@ -28,7 +28,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('warehouse', WarehouseController::class);
     Route::resource('uoms', UOMController::class);
     Route::resource('categories', ItemCategoryController::class);
+
+    
+    Route::get('/items/search', [ItemController::class, 'searchItems'])->name('items.search');
     Route::resource('items', ItemController::class);
+
     Route::resource('material', MaterialRequestController::class);
     Route::get('/delivery/list', [DeliveryOrderController::class, 'list'])->name('delivery.list');
     Route::get('/delivery/{id}/warehouse', [DeliveryOrderController::class, 'deliveryByWarehouse'])->name('delivery.warehouse');
@@ -53,7 +57,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/get-delivery-items', [DeliveryOrderController::class, 'getDeliveryItems'])->name('getDeliveryItems');
     
 
-    Route::get('/search-items', [WarehouseItemController::class, 'searchItems'])->name('warehouse.items.search');
+    Route::get('/warehouse/search-items', [WarehouseItemController::class, 'searchItems'])->name('warehouse.items.search');
 
     Route::post('/arrival/search', [ItemArrivalController::class, 'searchData']);
     Route::post('/out/search', [ItemOutController::class, 'searchData']);

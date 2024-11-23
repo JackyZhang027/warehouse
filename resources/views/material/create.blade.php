@@ -60,7 +60,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <select class="form-control item-select" name="items[]" required>
+                            <select class="form-control form-control-lg item-select" name="items[]" required>
                                 <option value="">Select Item</option>
                                 <!-- Options will be dynamically populated -->
                             </select>
@@ -69,11 +69,11 @@
                         <td><input type="text" class="form-control uom" name="uom[]" disabled></td>
                         <td><input type="date" class="form-control" name="date_needed[]" required></td>
                         <td><input type="text" class="form-control" name="boq[]"></td>
-                        <td><input type="checkbox" name="check_m[]"></td>
-                        <td><input type="checkbox" name="check_t[]"></td>
-                        <td><input type="checkbox" name="check_he[]"></td>
-                        <td><input type="checkbox" name="check_c[]"></td>
-                        <td><input type="checkbox" name="check_o[]"></td>
+                        <td><input type="hidden" name="check_m[]" value="0"> <input type="checkbox" name="check_m[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                        <td><input type="hidden" name="check_t[]" value="0"> <input type="checkbox" name="check_t[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                        <td><input type="hidden" name="check_he[]" value="0"> <input type="checkbox" name="check_he[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                        <td><input type="hidden" name="check_c[]" value="0"> <input type="checkbox" name="check_c[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                        <td><input type="hidden" name="check_o[]" value="0"> <input type="checkbox" name="check_o[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
                         <td></td>
                     </tr>
                     <tr>
@@ -117,21 +117,16 @@
 
 @section('js')
 <script>
-    $(document).ready(function() {
-        let items = @json($items); // Assuming $items is passed from the backend
-        console.log(items)
-        // Function to populate the dropdown
-        function populateDropdown(selectElement) {
-            selectElement.empty();
-            selectElement.append('<option value="">Select Item</option>');
-            $.each(items, function(index, item) {
-                selectElement.append('<option value="' + item.id + '" data-uom="' + item.uom.name + '">' + item.code + ' - ' + item.name + '</option>');
-            });
+    // Get CSRF token from meta tag
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Add CSRF token to AJAX requests
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
         }
-
-        // Initialize the first dropdown
-        populateDropdown($('.item-select'));
-
+    });
+    $(document).ready(function() {
         // Add new row
         let rowIndex = 1; // Initial row index
 
@@ -149,11 +144,11 @@
                     <td><input type="text" class="form-control uom" name="uom[]" disabled></td>
                     <td><input type="date" class="form-control" name="date_needed[]" required></td>
                     <td><input type="text" class="form-control" name="boq[]"></td>
-                    <td><input type="checkbox" name="check_m[]"></td>
-                    <td><input type="checkbox" name="check_t[]"></td>
-                    <td><input type="checkbox" name="check_he[]"></td>
-                    <td><input type="checkbox" name="check_c[]"></td>
-                    <td><input type="checkbox" name="check_o[]"></td>
+                    <td><input type="hidden" name="check_m[]" value="0"> <input type="checkbox" name="check_m[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_t[]" value="0"> <input type="checkbox" name="check_t[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_he[]" value="0"> <input type="checkbox" name="check_he[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_c[]" value="0"> <input type="checkbox" name="check_c[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
+                    <td><input type="hidden" name="check_o[]" value="0"> <input type="checkbox" name="check_o[]" value="1" onclick="this.previousElementSibling.disabled = this.checked;"></td>
                     <td><span class="delete-row"><i class="fas fa-trash"></i></span></td>
                 </tr>
                 <tr>
@@ -163,106 +158,84 @@
                     </td>
                 </tr>`;
             $('#tblItem tbody').append(newRow);
-            // Populate the dropdown for the new row
-            populateDropdown($('#tblItem tbody tr').eq(-2).find('.item-select'));
 
-            // Trigger change event to update the disabled options
-            $('.item-select').trigger('change');
+            initializeSelect2(); // Re-initialize Select2
 
         });
-         // Prevent duplicate selection
+        
         $(document).on('change', '.item-select', function() {
-            let selectedItems = [];
-            $('.item-select').each(function() {
-                if ($(this).val() !== "") {
-                    selectedItems.push($(this).val());
-                }
-            });
-
-            $('.item-select').each(function() {
-                let currentValue = $(this).val();
-                $(this).find('option').each(function() {
-                    if ($(this).val() !== "" && $(this).val() !== currentValue && selectedItems.includes($(this).val())) {
-                        $(this).prop('disabled', true);
-                    } else {
-                        $(this).prop('disabled', false);
-                    }
-                });
-            });
-
-            // Update UOM based on selected item
-            let selectedItem = $(this).find('option:selected');
-            let uom = selectedItem.data('uom') || '';
+            let selectedItem = $(this).select2('data')[0];
+            let uom = selectedItem.uom || ''; 
+            console.log(selectedItem)
             $(this).closest('tr').find('.uom').val(uom);
         });
-        // Delete row
+        
         $(document).on('click', '.delete-row', function() {
-            $(this).closest('tr').next('tr').remove(); // Remove description row
-            $(this).closest('tr').remove(); // Remove main row
-            $('.item-select').trigger('change'); // Update options after deletion
+            $(this).closest('tr').next('tr').remove();
+            $(this).closest('tr').remove();
+            initializeSelect2();
         });
-
+        initializeSelect2()
     });
-</script>
+    function initializeSelect2() {
+        $('.item-select').select2({
+            placeholder: 'Search for an item',
+            ajax: {
+                url: '{{ route('items.search') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
 
-<script>
-    // Get CSRF token from meta tag
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                templateResult: function (item) {
+                    if (!item.id) return item.text;
 
-    // Add CSRF token to AJAX requests
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        }
-    });
-    $(document).ready(function() {
-        var currentStep = 0;
-        var steps = $('.step');
-        
-        function showStep(step) {
-            steps.removeClass('active');
-            $(steps[step]).addClass('active');
-        }
+                    // Create the dropdown template with the new format
+                    var result = $('<span>' +
+                        '<strong>' + item.code + ' - ' + item.name + '</strong><br/>' + 
+                        '<small>' + item.description + '</small>' + 
+                        '</span>');
 
-        function validateStep(step) {
-            var isValid = true;
-            var firstInvalid = null;
-            $(steps[step]).find('input, textarea').each(function() {
-                if (!this.checkValidity()) {
-                    $(this).addClass('is-invalid');
-                    if (isValid) {
-                        firstInvalid = this;
-                    }
-                    isValid = false;
-                } else {
-                    $(this).removeClass('is-invalid');
-                }
-            });
-            if (!isValid && firstInvalid) {
-                firstInvalid.focus();
-            }
-            return isValid;
-        }
+                    result.attr('data-uom', item.uom || '');
 
-        
-        $('.next-step').click(function() {
-            if (validateStep(currentStep)) {
-                currentStep++;
-                if (currentStep >= steps.length) {
-                    currentStep = steps.length - 1;
-                }
-                showStep(currentStep);
-            }
+                    return result;
+                },
+                templateSelection: function (item) {
+                    return item.name || item.id;
+                },
+
+                cache: true
+            },
+            minimumInputLength: 2
         });
         
-        $('.prev-step').click(function() {
-            currentStep--;
-            if (currentStep < 0) {
-                currentStep = 0;
+    }
+
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+            if (!checkbox.checked) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = checkbox.name;
+                hiddenInput.value = '0';
+                checkbox.parentNode.appendChild(hiddenInput);
             }
-            showStep(currentStep);
         });
     });
+
 </script>
 @include('layouts.errors.swal-alert')
 @stop
