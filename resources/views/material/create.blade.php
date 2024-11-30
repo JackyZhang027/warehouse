@@ -250,10 +250,10 @@
             success: function(response) {
                 if (response.success) {
                     // Handle success (show message, reset form, etc.)
-                    Swal.fire('Success', 'Material request submitted successfully!', 'success');
-                    $('form')[0].reset(); // Optionally reset the form
+                    Swal.fire('Success', 'Material request submitted successfully!', 'success').then(() => {
+                        location.reload();
+                    });
                 } else {
-                    // Handle failure (show error message, etc.)
                     Swal.fire('Error', 'Something went wrong. Please try again!', 'error');
                 }
             },

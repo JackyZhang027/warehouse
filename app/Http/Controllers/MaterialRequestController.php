@@ -165,10 +165,10 @@ class MaterialRequestController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('material.edit', $materialRequest->id)->with('success', 'Material Request updated successfully.');
+            return response()->json(['success'=>true, 'msg' => 'SPM Berhasil dibuat!']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('material.create')->with('error', 'Gagal membuat SPM !');
+            return response()->json(['success'=>false, 'msg' => 'Gagal membuat SPM!']);
         }
     }
 
