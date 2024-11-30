@@ -388,6 +388,13 @@ return [
             'route' => 'roles.index',
             'can' => ['role-list'],
         ],
+        ['header' => 'Additional'],
+        [
+            'text'  => 'Pengumuman',
+            'icon'  => 'fas fa-fw fa-bullhorn',
+            'route' => 'announcement.index',
+            'can' => ['announcement-list'],
+        ],
         ['header' => 'Setting'],
         [
             'key' => 'Perusahaan',

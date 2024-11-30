@@ -50,7 +50,11 @@ class PermissionTableSeeder extends Seeder
            'item-out-create',
            'item-out-edit',
            'item-out-delete',
-           'setting-update'
+           'setting-update',
+           'announcement-list',
+           'announcement-create',
+           'announcement-edit',
+           'announcement-delete',
         ];
         
         foreach ($permissions as $permission) {

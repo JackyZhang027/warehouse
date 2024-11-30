@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Warehouse;
 use App\Models\MaterialRequest;
 use App\Models\DeliveryOrder;
+use App\Models\Announcement;
 
 class DashboardController extends Controller
 {
@@ -31,6 +32,10 @@ class DashboardController extends Controller
             $totalDeliveryNote = DeliveryOrder::whereIn('warehouse_id', $user->warehouses()->pluck('id'))->count();
         }
 
-        return view('home', compact('warehouses', 'totalWarehouses', 'totalMaterialRequest', 'totalDeliveryNote'));
+        $announcements = Announcement::where('published', true)
+                            ->where('expire_date', '>', now())
+                            ->get();
+
+        return view('home', compact('warehouses', 'totalWarehouses', 'totalMaterialRequest', 'totalDeliveryNote', 'announcements'));
     }
 }

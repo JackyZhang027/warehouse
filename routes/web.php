@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseItemController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\AnnouncementController;
 use App\Models\ItemArrival;
 use Illuminate\Support\Facades\Route;
 
@@ -70,5 +71,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     Route::resource('sites', SiteController::class);
+    Route::resource('announcement', AnnouncementController::class);
 
 });

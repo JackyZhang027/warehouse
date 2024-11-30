@@ -77,6 +77,24 @@
         </div>
     </div>
 </div>
+@if($announcements->isNotEmpty())
+    <h3 class="text-primary font-weight-bold">Pengumuman</h3>
+    <div class="row">
+        @foreach($announcements as $announcement)
+            <div class="col-sm-12 col-md-12 col-xl-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ $announcement->title }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">{{ $announcement->date }}</p>
+                        <p>{{ $announcement->description }}</p>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+@endif
 @stop
 
 @section('css')
