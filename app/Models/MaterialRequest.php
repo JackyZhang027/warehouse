@@ -21,7 +21,7 @@ class MaterialRequest extends Model
     ];
 
     protected $casts = [
-        'date' => 'datetime',
+        'date' => 'date',
     ];
     
     public function items()

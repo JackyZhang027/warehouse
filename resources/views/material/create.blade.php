@@ -236,6 +236,40 @@
         });
     });
 
+    $('form').on('submit', function(event) {
+        event.preventDefault(); // Prevent normal form submission
+
+        // Get form data
+        var formData = $(this).serialize();
+
+        // Send AJAX request
+        $.ajax({
+            url: '{{ route('material.store') }}', // Set your route here
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Handle success (show message, reset form, etc.)
+                    Swal.fire('Success', 'Material request submitted successfully!', 'success');
+                    $('form')[0].reset(); // Optionally reset the form
+                } else {
+                    // Handle failure (show error message, etc.)
+                    Swal.fire('Error', 'Something went wrong. Please try again!', 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors (e.g., validation errors)
+                var errors = xhr.responseJSON.errors;
+                console.log(errors)
+                var errorMessage = '';
+                for (var key in errors) {
+                    errorMessage += errors[key].join(', ') + '\n';
+                }
+                Swal.fire('Error', errorMessage, 'error');
+            }
+        });
+    });
+
 </script>
 @include('layouts.errors.swal-alert')
 @stop

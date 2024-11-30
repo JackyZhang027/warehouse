@@ -11,7 +11,7 @@ class DeliveryOrder extends Model
     protected $guarded = ['id'];
     
     protected $casts = [
-        'date' => 'datetime',
+        'date' => 'date',
     ];
     
 

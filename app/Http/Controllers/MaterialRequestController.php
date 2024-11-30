@@ -123,6 +123,8 @@ class MaterialRequestController extends Controller
             'date_needed.*' => 'required|date',
             'boq.*' => 'nullable|string',
             'description.*' => 'nullable|string',
+        ], [
+            'qty.*.min' => 'Qty untuk item pada baris :index tidak boleh lebih kecil dari 1',
         ]);
 
         DB::beginTransaction();

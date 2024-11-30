@@ -32,7 +32,7 @@
         <div class="col-3">
             <div class="form-group">
                 <label for="date">Tanggal SPM</label>
-                <input type="date" class="form-control" id="date" name="date" value="{{ $materialRequest->date }}" required>
+                <input type="date" class="form-control" id="date" name="date" value="{{ $materialRequest->date->format('Y-m-d') }}" required>
             </div>
         </div>
         <div class="col-3">
@@ -96,7 +96,7 @@
                             </td>
                             <td><input type="text" class="form-control qty" name="qty[]" value="{{ $item->qty }}" required @readonly($is_readonly)></td>
                             <td><input type="text" class="form-control uom" name="uom[]" value="{{ $item->item->uom->name }}" disabled></td>
-                            <td><input type="date" class="form-control" name="date_needed[]" value="{{ $item->date_needed }}" required></td>
+                            <td><input type="date" class="form-control" name="date_needed[]" value="{{ $item->date_needed->format('Y-m-d') }}" required></td>
                             <td><input type="text" class="form-control" name="boq[]" value="{{ $item->boq_code }}"></td>
                             <td>
                                 <input type="hidden" name="check_m[{{ $index }}]" value="0">
