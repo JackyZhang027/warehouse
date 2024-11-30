@@ -42,7 +42,7 @@
             </tr>
             <tr class="parent">
                 <td colspan="2" style="white-space: nowrap">Tanggal</td>
-                <td colspan="4">: {{$sj->date}}</td>
+                <td colspan="4">: {{$sj->date->format('d-m-Y')}}</td>
                 <td colspan="2">Penerima</td>
                 <td colspan="4">: {{$sj->receipent}}</td>
             </tr>

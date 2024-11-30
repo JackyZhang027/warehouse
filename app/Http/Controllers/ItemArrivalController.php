@@ -237,4 +237,25 @@ class ItemArrivalController extends Controller
     {
         //
     }
+
+    public function top10Arival(Request $request)
+    {
+        if ($request->ajax()) {
+            $warehouse_id = $request->warehouse_id;
+        
+            $data = ItemArrival::select('item_id', \DB::raw('SUM(arrived_qty) as arrived_qty'), 'items.name', 'items.code')
+                    ->join('items', 'item_arrivals.item_id', '=', 'items.id')
+                    ->groupBy('item_id', 'items.name', 'items.code')
+                    ->whereHas('deliveryOrderItem.deliveryOrder.warehouse', function ($query) use ($warehouse_id) {
+                        $query->where('warehouses.id', $warehouse_id);
+                    })
+                    ->orderByDesc(\DB::raw('SUM(arrived_qty)'))
+                    ->limit(10)
+                    ->get();
+        
+            return Datatables::of($data)
+                ->addIndexColumn()  
+                ->make(true);
+        }
+    }
 }

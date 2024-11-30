@@ -9,6 +9,11 @@ class DeliveryOrder extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+    
 
     public function DeliveryItems()
     {

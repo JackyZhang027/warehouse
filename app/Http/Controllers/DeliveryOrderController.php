@@ -359,7 +359,7 @@ class DeliveryOrderController extends Controller
             return Excel::download(new DeliveryOrderExport($data), 'Surat Jalan.xlsx');
         }elseif($type == 'PDF'){
             $mpdf = new Mpdf([
-                'format' => 'A4-L', // 'L' stands for landscape orientation
+                'format' => 'A4', // 'L' stands for landscape orientation
                 'margin_top' => 8, // Set top margin (in mm)
                 'margin_bottom' => 8, // Set bottom margin (in mm)
                 'margin_left' => 8, // Set left margin (in mm)

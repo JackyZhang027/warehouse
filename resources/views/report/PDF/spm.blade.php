@@ -87,7 +87,7 @@
             </tr>
             <tr>
                 <td style="white-space: nowrap">Tanggal</td>
-                <td>: {{$spm->date}}</td>
+                <td>: {{$spm->date->format('d-m-Y')}}</td>
             </tr>
         </table>
         <br/>
@@ -118,7 +118,7 @@
                     <td style="border: 1px solid black; text-align:center">{{$item->item->uom->name}}</td>
                     <td style="border: 1px solid black">{{$item->item->description}}</td>
                     <td style="border: 1px solid black">{{$item->boq_code}}</td>
-                    <td style="border: 1px solid black; text-align:center">{{$item->date_needed}}</td>
+                    <td style="border: 1px solid black; text-align:center">{{$item->date_needed->format('d-m-Y')}}</td>
                     <td style="border: 1px solid black; text-align:center">{{$item->check_m == 1 ? 'V' : ''}}</td>
                     <td style="border: 1px solid black; text-align:center">{{$item->check_t == 1 ? 'V' : ''}}</td>
                     <td style="border: 1px solid black; text-align:center">{{$item->check_he == 1 ? 'V' : ''}}</td>
@@ -132,16 +132,17 @@
         <br/>
         <table style="width: 100%" class="signature">
             <tr style="text-align: center">
-                <td colspan="4" style="text-align:center; font-weight:bold">SITE PROJECT OFFICE</td>
+                <td colspan="5" style="text-align:center; font-weight:bold">SITE PROJECT OFFICE</td>
                 <td colspan="5" style="text-align:center; font-weight:bold">BRANCH OFFICE</td>
                 <td colspan="2" style="text-align:center;"></td>
                 <td colspan="5" style="text-align:center; font-weight:bold">HEAD OFFICE</td>
             </tr>
-            <tr><td colspan="16" style="height: 80px"></td></tr>
+            <tr><td colspan="17" style="height: 80px"></td></tr>
             <tr style="text-align: center; font-weight: bold">
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top"><u>{{$spm->warehouse->logistic}}</u></td>
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top"><u>{{$spm->warehouse->supervisor}}</u></td>
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top"><u>{{$spm->warehouse->site_engineer}}</u></td>
+                <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top"><u>{{$spm->warehouse->site_manager}}</u></td>
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top"><u>{{$spm->warehouse->project_manager}}</u></td>
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top" colspan="2"><u>{{$spm->warehouse->head_logistic}}</u></td>
                 <td style="text-align:center; text-decoration: underline; font-weight:bold" valign="top" colspan="3"><u>{{$spm->warehouse->branch_manager}}</u></td>
@@ -153,46 +154,13 @@
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top">Logistic</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top">SPV</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top">ENG</td>
+                <td style="text-align:center; height: 50px; font-weight:bold" valign="top">SM</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top">PM</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top" colspan="2">HEAD <br/>LOGISTIC</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top" colspan="3">BRANCH <br/>MANAGER</td>
                 <td style="text-align:center; height: 50px; font-weight:bold" valign="top" colspan="2">ASSET <br/>CONTROLLER</td>
                 <td style="text-align:center; height: 50px; font-weight:bold;" valign="top" colspan="2">HEAD OF <br/>PURCHASING</td>
                 <td style="text-align:center; height: 50px; font-weight:bold;" valign="top" colspan="3">PROJECT <br/>MANAGEMENT</td>
-            </tr>
-        </table>
-        <br/>
-        <br/>
-        <table style="width: 100%">
-            <tr>
-                <td style="width: 70%"></td>
-                <td></td>
-                <td style="font-weight: bold">KETERANGAN:</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="font-weight: bold; text-align: center">M</td>
-                <td>MATERIAL INDUK</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="font-weight: bold; text-align: center">I</td>
-                <td>ALAT KERJA</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="font-weight: bold; text-align: center">HE</td>
-                <td>ALAT BERAT</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="font-weight: bold; text-align: center">C</td>
-                <td>KONSUMABEL</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="font-weight: bold; text-align: center">O</td>
-                <td>DAN LAIN-LAIN</td>
             </tr>
         </table>
     </div>

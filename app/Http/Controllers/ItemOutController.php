@@ -330,4 +330,25 @@ class ItemOutController extends Controller
         }
     }
 
+    public function top10Out(Request $request)
+    {
+        if ($request->ajax()) {
+            $warehouse_id = $request->warehouse_id;
+        
+            $data = ItemOutDetail::select('item_id', \DB::raw('SUM(qty) as qty'), 'items.name', 'items.code')
+                    ->join('items', 'item_out_details.item_id', '=', 'items.id')
+                    ->groupBy('item_id', 'items.name', 'items.code')
+                    ->whereHas('itemOut.warehouse', function ($query) use ($warehouse_id) {
+                        $query->where('warehouses.id', $warehouse_id);
+                    })
+                    ->orderByDesc(\DB::raw('SUM(qty)'))
+                    ->limit(10)
+                    ->get();
+        
+            return Datatables::of($data)
+                ->addIndexColumn()  
+                ->make(true);
+        }
+    }
+
 }

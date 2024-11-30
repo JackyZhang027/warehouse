@@ -20,6 +20,10 @@ class MaterialRequest extends Model
         'status_id',
     ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+    
     public function items()
     {
         return $this->hasMany(MaterialRequestItem::class, 'mr_id');

@@ -13,15 +13,24 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         if ($user && $user->hasRole('Super Admin')) {
-            $totalWarehouses = Warehouse::count(); 
+            $warehouses = Warehouse::all()->mapWithKeys(function ($item) {
+                return [$item->id => $item->spk_number . ' - ' . $item->project];
+            })->all();
+        } else {
+            $warehouses = $user->warehouses->mapWithKeys(function ($item) {
+                return [$item->id => $item->spk_number . ' - ' . $item->project];
+            })->all();
+        }
+
+        $totalWarehouses = count($warehouses);
+        if ($user && $user->hasRole('Super Admin')) {
             $totalMaterialRequest = MaterialRequest::count();
             $totalDeliveryNote = DeliveryOrder::count();
         } else {
-            $totalWarehouses = $user->warehouses()->count();
             $totalMaterialRequest = MaterialRequest::whereIn('warehouse_id', $user->warehouses()->pluck('id'))->count();
             $totalDeliveryNote = DeliveryOrder::whereIn('warehouse_id', $user->warehouses()->pluck('id'))->count();
         }
 
-        return view('home', compact('totalWarehouses', 'totalMaterialRequest', 'totalDeliveryNote'));
+        return view('home', compact('warehouses', 'totalWarehouses', 'totalMaterialRequest', 'totalDeliveryNote'));
     }
 }

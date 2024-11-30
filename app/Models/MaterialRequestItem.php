@@ -23,6 +23,9 @@ class MaterialRequestItem extends Model
         'check_o',
         'description',
     ];
+    protected $casts = [
+        'date_needed' => 'datetime',
+    ];
 
     public function materialRequest()
     {

@@ -39,8 +39,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('delivery', DeliveryOrderController::class);
     
     
+    Route::get('/arrival/top10', [ItemArrivalController::class, 'top10Arival'])->name('arrival.top10');
     Route::resource('arrival', ItemArrivalController::class);
+
+    
+    Route::get('/out/top10', [ItemOutController::class, 'top10Out'])->name('out.top10');
     Route::resource('out', ItemOutController::class);
+
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     Route::post('/report/generate', [ReportController::class, 'generate'])->name('report.generate');
     Route::get('/history', [ItemOutController::class, 'history'])->name('out.history');
