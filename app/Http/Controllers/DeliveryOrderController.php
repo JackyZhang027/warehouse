@@ -38,6 +38,9 @@ class DeliveryOrderController extends Controller
                 ->editColumn('created_by', function ($row) {
                     return $row->createUser->name;
                 })
+                ->editColumn('date', function ($row) {
+                    return $row->date->format('Y-m-d');
+                })
                 ->addColumn('action', function($row){
                     $editBtn = '';
                     $deleteBtn = '';

@@ -303,7 +303,10 @@ return [
         ],
 
         // Sidebar items:
-        ['header' => 'Master Data'],
+        [
+            'header' => 'Master Data',
+            'can' =>  ['warehouse-list', 'uom-list', 'category-list', 'item-list'],
+        ],
         [
             'text' => 'Gudang',
             'route' => 'warehouse.index',
@@ -328,53 +331,72 @@ return [
             'icon'  =>  'fas fa-fw fa-boxes',
             'can'   => ['item-list'],
         ],
-        ['header' => 'Transaksi'],
+        [
+            'header' => 'Transaksi',
+            'can'   => [
+                'spm-list', 'spm-create', 'spm-edit', 'spm-delete',
+                'delivery-note-list', 'delivery-note-create', 'delivery-note-edit', 'delivery-note-delete',
+                'item-out-list', 'item-out-create', 'item-out-edit', 'item-out-delete',
+        
+            ],   
+        ],
         [
             'text'  =>  'Surat Pengajuan Material',
             'route' =>  'material.index',
-            'icon'  =>  'fas fa-fw fa-file-signature'
+            'icon'  =>  'fas fa-fw fa-file-signature',
+            'can' => ['spm-list'],
         ],
         [
             'text'  =>  'Surat Jalan',
             'route' =>  'delivery.index',
-            'icon'  =>  'fas fa-fw fa-truck'
+            'icon'  =>  'fas fa-fw fa-truck',
+            'can'   => ['delivery-note-list'],
             
         ],
         [
             'text'  =>  'Penerimaan Barang',
             'route' =>  'arrival.create',
-            'icon'  =>  'fas fa-fw fa-clipboard-check'
+            'icon'  =>  'fas fa-fw fa-clipboard-check',
+            'can'   => ['delivery-note-list'],
         ],
         [
             'text'  =>  'Barang Keluar',
             'route' =>  'out.index',
-            'icon'  =>  'fas fa-fw fa-dolly'
+            'icon'  =>  'fas fa-fw fa-dolly',
+            'can'   => ['item-out-list'],
         ],
-        ['header' => 'Laporan'],
+        [
+            'header' => 'Laporan',
+            'can' => ['view-report']
+        ],
         [
             'text'  =>  'Penerimaan Barang',
             'route' =>  'arrival.index',
-            'icon'  =>  'fas fa-fw fa-file-invoice'
-            
+            'icon'  =>  'fas fa-fw fa-file-invoice',
+            'can'   => ['view-report'],
         ],
-        
         [
             'text'  =>  'Surat Jalan',
             'route' =>  'delivery.list',
-            'icon'  =>  'fas fa-fw fa-file-invoice'
-            
+            'icon'  =>  'fas fa-fw fa-file-invoice',
+            'can'   => ['view-report'],            
         ],
         [
             'text' => 'Barang Keluar',
             'route' => 'out.history',
-            'icon'  =>  'fas fa-fw fa-file-export'
+            'icon'  =>  'fas fa-fw fa-file-export',
+            'can'   => ['view-report'],
         ],
         [
             'text' => 'Export Laporan',
             'route' => 'report.index',
-            'icon'  =>  'fas fa-fw fa-file-alt'
+            'icon'  =>  'fas fa-fw fa-file-alt',
+            'can'   => ['view-report'],
         ],
-        ['header' => 'User Management'],
+        [
+            'header' => 'User Management',
+            'can' => ['user-list','role-list']
+        ],
         [
             'key' => 'users',
             'text' => 'User',
@@ -388,14 +410,20 @@ return [
             'route' => 'roles.index',
             'can' => ['role-list'],
         ],
-        ['header' => 'Additional'],
+        [
+            'header' => 'Additional',
+            'can' => ['announcement-list']
+        ],
         [
             'text'  => 'Pengumuman',
             'icon'  => 'fas fa-fw fa-bullhorn',
             'route' => 'announcement.index',
             'can' => ['announcement-list'],
         ],
-        ['header' => 'Setting'],
+        [
+            'header' => 'Setting',
+            'can' => ['setting-update']
+        ],
         [
             'key' => 'Perusahaan',
             'text' => 'Perusahaan',

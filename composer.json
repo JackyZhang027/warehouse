@@ -12,6 +12,7 @@
         "laravel/ui": "^4.5",
         "maatwebsite/excel": "^3.1",
         "mpdf/mpdf": "^8.2",
+        "spatie/laravel-activitylog": "^4.9",
         "spatie/laravel-permission": "^6.9",
         "yajra/laravel-datatables": "^11.0"
     },

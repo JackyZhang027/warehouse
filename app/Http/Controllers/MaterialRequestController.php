@@ -35,6 +35,9 @@ class MaterialRequestController extends Controller
             ->editColumn('warehouse_id', function ($row) {
                 return $row->warehouse->project;
             })
+            ->editColumn('date', function ($row) {
+                return $row->date->format('Y-m-d');
+            })
             ->editColumn('requested_by', function ($row) {
                 return $row->requestor->name;
             })

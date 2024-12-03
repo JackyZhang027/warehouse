@@ -9,6 +9,11 @@ class DeliveryOrderItem extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logFillable();
+    }
     public function deliveryOrder()
     {
         return $this->belongsTo(DeliveryOrder::class, 'delivery_order_id');
