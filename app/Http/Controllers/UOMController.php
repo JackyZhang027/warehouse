@@ -11,6 +11,13 @@ class UOMController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:uom-list|uom-create|uom-edit|uom-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:uom-create', ['only' => ['create','store']]);
+        $this->middleware('permission:uom-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:uom-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {

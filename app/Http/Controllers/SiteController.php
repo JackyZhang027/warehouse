@@ -12,6 +12,13 @@ class SiteController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:setting-update', ['only' => ['index','store']]);
+        $this->middleware('permission:setting-update', ['only' => ['create','store']]);
+        $this->middleware('permission:setting-update', ['only' => ['edit','update']]);
+        $this->middleware('permission:setting-update', ['only' => ['destroy']]);
+    }
     public function index()
     {
         $site = Site::first();

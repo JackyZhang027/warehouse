@@ -11,6 +11,13 @@ class AnnouncementController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:announcement-list|announcement-create|announcement-edit|announcement-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:announcement-create', ['only' => ['create','store']]);
+        $this->middleware('permission:announcement-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:announcement-delete', ['only' => ['destroy']]);
+    }
 
     public function index(Request $request)
     {

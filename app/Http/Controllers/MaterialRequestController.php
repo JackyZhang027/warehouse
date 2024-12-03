@@ -20,6 +20,14 @@ class MaterialRequestController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:spm-list|spm-create|spm-edit|spm-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:spm-create', ['only' => ['create','store']]);
+        $this->middleware('permission:spm-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:spm-delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -48,11 +56,11 @@ class MaterialRequestController extends Controller
                 $editBtn = '';
                 $deleteBtn = '';
                 
-                if (auth()->user()->can('item-edit')) {
+                if (auth()->user()->can('spm-edit')) {
                     $editBtn = '<a href="'. route('material.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
                 }
                 
-                if (auth()->user()->can('item-delete')) {
+                if (auth()->user()->can('spm-delete')) {
                     $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('material.destroy', $row->id) .'\', \'tblMaterialRequest\')"><i class="fas fa-trash-alt"></i> </button>';
                 }
                 return $editBtn.$deleteBtn;

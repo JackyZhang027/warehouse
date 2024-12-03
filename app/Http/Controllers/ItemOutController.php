@@ -16,6 +16,13 @@ class ItemOutController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:item-out-list|item-out-create|item-out-edit|item-out-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:item-out-create', ['only' => ['create','store']]);
+        $this->middleware('permission:item-out-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:item-out-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -38,11 +45,11 @@ class ItemOutController extends Controller
                 $editBtn = '';
                 $deleteBtn = '';
                 
-                if (auth()->user()->can('item-edit')) {
+                if (auth()->user()->can('item-out-edit')) {
                     $editBtn = '<a href="'. route('out.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
                 }
                 
-                if (auth()->user()->can('item-delete')) {
+                if (auth()->user()->can('item-out-delete')) {
                     $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('out.destroy', $row->id) .'\', \'tblIssued\')"><i class="fas fa-trash-alt"></i> </button>';
                 }
                 return $editBtn.$deleteBtn;

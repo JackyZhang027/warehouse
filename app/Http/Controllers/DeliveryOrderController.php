@@ -21,6 +21,13 @@ class DeliveryOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('permission:delivery-note-list|delivery-note-create|delivery-note-edit|delivery-note-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:delivery-note-create', ['only' => ['create','store']]);
+        $this->middleware('permission:delivery-note-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:delivery-note-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -45,11 +52,11 @@ class DeliveryOrderController extends Controller
                     $editBtn = '';
                     $deleteBtn = '';
                     
-                    if (auth()->user()->can('item-edit')) {
+                    if (auth()->user()->can('delivery-note-edit')) {
                         $editBtn = '<a href="'. route('delivery.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
                     }
                     
-                    if (auth()->user()->can('item-delete')) {
+                    if (auth()->user()->can('delivery-note-delete')) {
                         $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblDeliveryOrder\')"><i class="fas fa-trash-alt"></i> </button>';
                     }
                     return $editBtn.$deleteBtn;

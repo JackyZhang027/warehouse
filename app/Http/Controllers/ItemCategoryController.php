@@ -11,6 +11,14 @@ class ItemCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
+     function __construct()
+     {
+         $this->middleware('permission:category-list|category-create|category-edit|category-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:category-create', ['only' => ['create','store']]);
+         $this->middleware('permission:category-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:category-delete', ['only' => ['destroy']]);
+     }
     public function index(Request $request)
     {
         if ($request->ajax()) {

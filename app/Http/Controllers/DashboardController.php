@@ -28,8 +28,8 @@ class DashboardController extends Controller
             $totalMaterialRequest = MaterialRequest::count();
             $totalDeliveryNote = DeliveryOrder::count();
         } else {
-            $totalMaterialRequest = MaterialRequest::whereIn('warehouse_id', $user->warehouses()->pluck('id'))->count();
-            $totalDeliveryNote = DeliveryOrder::whereIn('warehouse_id', $user->warehouses()->pluck('id'))->count();
+            $totalMaterialRequest = MaterialRequest::whereIn('warehouse_id', $user->warehouses()->pluck('warehouses.id'))->count();
+            $totalDeliveryNote = DeliveryOrder::whereIn('warehouse_id', $user->warehouses()->pluck('warehouses.id'))->count();
         }
 
         $announcements = Announcement::where('published', true)
