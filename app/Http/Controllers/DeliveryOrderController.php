@@ -25,7 +25,7 @@ class DeliveryOrderController extends Controller
     {
         $this->middleware('permission:delivery-note-list|delivery-note-create|delivery-note-edit|delivery-note-delete', ['only' => ['index','store']]);
         $this->middleware('permission:delivery-note-create', ['only' => ['create','store']]);
-        $this->middleware('permission:delivery-note-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:delivery-note-edit|delivery-note-item-add', ['only' => ['edit','update']]);
         $this->middleware('permission:delivery-note-delete', ['only' => ['destroy']]);
     }
     public function index(Request $request)
@@ -46,17 +46,17 @@ class DeliveryOrderController extends Controller
                     return $row->createUser->name;
                 })
                 ->editColumn('date', function ($row) {
-                    return $row->date->format('Y-m-d');
+                    return $row->date->format('d-m-Y');
                 })
                 ->addColumn('action', function($row){
                     $editBtn = '';
                     $deleteBtn = '';
                     
-                    if (auth()->user()->can('delivery-note-edit')) {
+                    if (auth()->user()->canany(['delivery-note-edit', 'delivery-note-item-add', 'delivery-note-item-delete'])) {
                         $editBtn = '<a href="'. route('delivery.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
                     }
                     
-                    if (auth()->user()->can('delivery-note-delete')) {
+                    if (auth()->user()->canany('delivery-note-delete')) {
                         $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('delivery.destroy', $row->id) .'\', \'tblDeliveryOrder\')"><i class="fas fa-trash-alt"></i> </button>';
                     }
                     return $editBtn.$deleteBtn;
@@ -105,7 +105,7 @@ class DeliveryOrderController extends Controller
                 ->join('items as i', 'mri.item_id', '=', 'i.id')
                 ->select(
                     'dlo.do_number',
-                    'dlo.date as do_date',
+                    DB::raw("DATE_FORMAT(dlo.date, '%d-%m-%Y') as do_date"),
                     DB::raw("CONCAT(i.code, ' - ', i.name) as item"),
                     'doi.qty as do_qty',
                     'doi.received_qty',
@@ -324,21 +324,6 @@ class DeliveryOrderController extends Controller
     {
         $deliveryOrder = DeliveryOrder::findOrFail($id);
         $deliveryOrder->update($request->only(['date', 'warehouse_id', 'police_no', 'receipent', 'address']));
-        
-        // Update delivery order items
-        $items = $request->input('material_request_item_id');
-        $quantities = $request->input('qty');
-        
-        // Ensure existing items are removed
-        $deliveryOrder->items()->delete();
-        
-        foreach ($items as $index => $itemId) {
-            $deliveryOrder->items()->create([
-                'material_request_item_id' => $itemId,
-                'qty' => $quantities[$index],
-            ]);
-        }
-        
         return redirect()->route('delivery.index')->with('success', 'Surat Jalan updated successfully.');
     }
     
@@ -441,12 +426,11 @@ class DeliveryOrderController extends Controller
             $deliveryOrderItem->delete();
 
             DB::commit();
-            return redirect()->route('delivery.edit', $deliveryOrderItem->delivery_order_id)->with('success', 'Barang Berhasil dihapus.');
+            return response()->json(['success'=>true, 'msg' => 'Barang Berhasil dihapus!']);
         } catch (\Exception $e) {
             DB::rollBack();
             // Optionally log the error or handle it as needed
-            dd($e);
-            return redirect()->route('delivery.edit', $deliveryOrderItem->delivery_order_id)->with('error', 'Gagal menghapus barang.');
+            return response()->json(['success'=>false, 'msg' => 'Gagal menghapus barang!']);
         }
 
     }

@@ -11,15 +11,17 @@ class WarehouseItemController extends Controller
     {
         $keyword = $request->input('keyword');
         
+        // If a keyword is provided, filter the items
         $items = WarehouseItem::with(['item', 'item.uom'])
-                    ->whereHas('item', function($query) use ($keyword) {
-                        $query->where('name', 'like', '%' . $keyword . '%')
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->whereHas('item', function ($q) use ($keyword) {
+                            $q->where('name', 'like', '%' . $keyword . '%')
                             ->orWhere('code', 'like', '%' . $keyword . '%');
+                        });
                     })
                     ->get();
 
         return response()->json($items);
     }
-
 
 }

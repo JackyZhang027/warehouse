@@ -90,8 +90,8 @@ class ItemController extends Controller
     {
         $request->validate([
             'code' => 'required|string|max:255|unique:items,code',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:items,name',
+            'description' => 'required|string',
             'category_id' => 'required|exists:item_categories,id',
             'uom_id' => 'required|exists:uom,id',
         ]);
@@ -127,8 +127,8 @@ class ItemController extends Controller
         // Validate the incoming request data
         $request->validate([
             'code' => 'required|string|max:255|unique:items,code,'.$id,
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:items,name,'.$id,
+            'description' => 'required|string',
             'category_id' => 'required|exists:item_categories,id',
             'uom_id' => 'required|exists:uom,id',
         ]);

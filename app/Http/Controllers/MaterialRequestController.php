@@ -44,7 +44,7 @@ class MaterialRequestController extends Controller
                 return $row->warehouse->project;
             })
             ->editColumn('date', function ($row) {
-                return $row->date->format('Y-m-d');
+                return $row->date->format('d-m-Y');
             })
             ->editColumn('requested_by', function ($row) {
                 return $row->requestor->name;
@@ -213,59 +213,87 @@ class MaterialRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $materialRequest = MaterialRequest::findOrFail($id);
+        // Begin the transaction
+        DB::beginTransaction();
 
-        // Get existing item IDs from the database
-        $existingItemIds = $materialRequest->items->pluck('id')->toArray();
+        try {
+            // Find the material request by ID
+            $materialRequest = MaterialRequest::findOrFail($id);
 
-        // Get submitted item IDs from the request
-        $submittedItemIds = $request->input('item_id', []);
-        // dd( $request->input("check_he"));
-        // Track IDs to keep
-        $idsToKeep = [];
-        foreach ($request->input('items', []) as $index => $itemData) {
-            $itemId = $submittedItemIds[$index] ?? null;
+            // Validate the request
+            $request->validate([
+                'date' => 'nullable|date',  // Make 'date' optional
+            ]);
 
-            if ($itemId && in_array($itemId, $existingItemIds)) {
-                // Update existing item
-                $materialRequestItem = MaterialRequestItem::findOrFail($itemId);
-                $materialRequestItem->update([
-                    'item_id' => $itemData,
-                    'qty' => $request->input('qty')[$index],
-                    'date_needed' => $request->input('date_needed')[$index],
-                    'boq_code' => $request->input('boq')[$index],
-                    'description' => $request->input('description')[$index],
-                    'check_m' => $request->check_m[$index],
-                    'check_t' => $request->check_t[$index],
-                    'check_he' => $request->check_he[$index],
-                    'check_c' => $request->check_c[$index],
-                    'check_o' => $request->check_o[$index],
-                ]);
-                $idsToKeep[] = $itemId;
-            } else {
-                // Create new item
-                $newItem = MaterialRequestItem::create([
-                    'mr_id' => $materialRequest->id,
-                    'item_id' => $itemData,
-                    'qty' => $request->input('qty')[$index],
-                    'date_needed' => $request->input('date_needed')[$index],
-                    'boq_code' => $request->input('boq')[$index],
-                    'description' => $request->input('description')[$index],
-                    'check_m' => $request->check_m[$index],
-                    'check_t' => $request->check_t[$index],
-                    'check_he' => $request->check_he[$index],
-                    'check_c' => $request->check_c[$index],
-                    'check_o' => $request->check_o[$index],
-                ]);
-                $idsToKeep[] = $newItem->id;
+            // Update the 'date' field if present
+            if ($request->has('date') && $request->date) {
+                $materialRequest->date = $request->input('date');
+                $materialRequest->save();
             }
+
+            // Get existing item IDs from the database
+            $existingItemIds = $materialRequest->items->pluck('id')->toArray();
+
+            // Get submitted item IDs from the request
+            $submittedItemIds = $request->input('item_id', []);
+
+            // Track IDs to keep
+            $idsToKeep = [];
+            foreach ($request->input('items', []) as $index => $itemData) {
+                $itemId = $submittedItemIds[$index] ?? null;
+
+                if ($itemId && in_array($itemId, $existingItemIds)) {
+                    // Update existing item
+                    $materialRequestItem = MaterialRequestItem::findOrFail($itemId);
+                    $materialRequestItem->update([
+                        'item_id' => $itemData,
+                        'qty' => $request->input('qty')[$index],
+                        'date_needed' => $request->input('date_needed')[$index],
+                        'boq_code' => $request->input('boq')[$index],
+                        'description' => $request->input('description')[$index],
+                        'check_m' => $request->check_m[$index],
+                        'check_t' => $request->check_t[$index],
+                        'check_he' => $request->check_he[$index],
+                        'check_c' => $request->check_c[$index],
+                        'check_o' => $request->check_o[$index],
+                    ]);
+                    $idsToKeep[] = $itemId;
+                } else {
+                    // Create new item
+                    $newItem = MaterialRequestItem::create([
+                        'mr_id' => $materialRequest->id,
+                        'item_id' => $itemData,
+                        'qty' => $request->input('qty')[$index],
+                        'date_needed' => $request->input('date_needed')[$index],
+                        'boq_code' => $request->input('boq')[$index],
+                        'description' => $request->input('description')[$index],
+                        'check_m' => $request->check_m[$index],
+                        'check_t' => $request->check_t[$index],
+                        'check_he' => $request->check_he[$index],
+                        'check_c' => $request->check_c[$index],
+                        'check_o' => $request->check_o[$index],
+                    ]);
+                    $idsToKeep[] = $newItem->id;
+                }
+            }
+
+            // Delete items that are no longer in the submitted data
+            $itemsToDelete = array_diff($existingItemIds, $idsToKeep);
+            MaterialRequestItem::whereIn('id', $itemsToDelete)->delete();
+
+            // Commit the transaction
+            DB::commit();
+
+            // Redirect with success message
+            return redirect()->route('material.edit', $id)->with('success', 'Material Request updated successfully.');
+
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of any error
+            DB::rollBack();
+
+            // Log or handle the error as needed
+            return redirect()->route('material.edit', $id)->with('error', 'Failed to update Material Request: ' . $e->getMessage());
         }
-
-        // Delete items that are no longer in the submitted data
-        $itemsToDelete = array_diff($existingItemIds, $idsToKeep);
-        MaterialRequestItem::whereIn('id', $itemsToDelete)->delete();
-
-        return redirect()->route('material.edit', $id)->with('success', 'Material Request updated successfully.');
     }
 
 

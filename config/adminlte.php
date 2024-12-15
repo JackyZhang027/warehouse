@@ -357,7 +357,7 @@ return [
             'text'  =>  'Penerimaan Barang',
             'route' =>  'arrival.create',
             'icon'  =>  'fas fa-fw fa-clipboard-check',
-            'can'   => ['delivery-note-list'],
+            'can'   => ['item-in-create'],
         ],
         [
             'text'  =>  'Barang Keluar',
@@ -367,31 +367,31 @@ return [
         ],
         [
             'header' => 'Laporan',
-            'can' => ['view-report']
+            'can' => ['view-report-item-in', 'view-report-delivery-note']
         ],
         [
             'text'  =>  'Penerimaan Barang',
             'route' =>  'arrival.index',
             'icon'  =>  'fas fa-fw fa-file-invoice',
-            'can'   => ['view-report'],
+            'can'   => ['view-report-item-in'],
         ],
         [
             'text'  =>  'Surat Jalan',
             'route' =>  'delivery.list',
             'icon'  =>  'fas fa-fw fa-file-invoice',
-            'can'   => ['view-report'],            
+            'can'   => ['view-report-delivery-note'],            
         ],
         [
             'text' => 'Barang Keluar',
             'route' => 'out.history',
             'icon'  =>  'fas fa-fw fa-file-export',
-            'can'   => ['view-report'],
+            'can'   => ['view-report-item-out'],
         ],
         [
             'text' => 'Export Laporan',
             'route' => 'report.index',
             'icon'  =>  'fas fa-fw fa-file-alt',
-            'can'   => ['view-report'],
+            'can'   => ['view-report-export'],
         ],
         [
             'header' => 'User Management',
@@ -408,6 +408,12 @@ return [
             'text'  => 'Role',
             'icon'  => 'fas fa-fw fa-user-shield',
             'route' => 'roles.index',
+            'can' => ['role-list'],
+        ],
+        [
+            'text'  => 'Permission',
+            'icon'  => 'fas fa-fw fa-lock',
+            'route' => 'permissions.index',
             'can' => ['role-list'],
         ],
         [

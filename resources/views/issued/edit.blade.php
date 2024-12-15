@@ -50,7 +50,7 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label for="date">Tanggal Barang Keluar</label>
-                        <input type="datetime-local" class="form-control" id="date" name="date" value="{{ $itemOut->date }}" required>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ $itemOut->date->format('Y-m-d') }}" required>
                     </div>
                 </div>
                 <div class="col-12">
@@ -203,6 +203,7 @@ $(document).ready(function() {
                     });
                 },
                 error: function(xhr) {
+                    alert('something wrong when searching data')
                     console.error('Error fetching items:', xhr.responseText);
                 }
             });

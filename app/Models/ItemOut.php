@@ -11,6 +11,9 @@ class ItemOut extends Model
 {
     use HasFactory, LogsActivity;
     protected $guarded = ['id'];
+    protected $casts = [
+        'date' => 'date',
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {
