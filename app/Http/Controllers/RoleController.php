@@ -45,11 +45,10 @@ class RoleController extends Controller
                ->addColumn('action', function($row){
                    $editBtn = '';
                    $deleteBtn = '';
+                    if (auth()->user()->can('role-edit')) {
+                        $editBtn = '<a href="'. route('roles.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
+                    }
                    if($row->name != "Super Admin"){
-                        if (auth()->user()->can('role-edit')) {
-                            $editBtn = '<a href="'. route('roles.edit', $row->id) .'" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a> ';
-                        }
-                        
                         if (auth()->user()->can('role-delete')) {
                             $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('roles.destroy', $row->id) .'\', \'tblRoles\')"><i class="fas fa-trash-alt"></i> </button>';
                         }
@@ -121,13 +120,14 @@ class RoleController extends Controller
      */
     public function edit($id): View
     {
+        
         $role = Role::find($id);
-        $permission = Permission::get();
+        $permissions = Permission::all()->groupBy('model_type');
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
     
-        return view('roles.edit',compact('role','permission','rolePermissions'));
+        return view('roles.edit',compact('role','permissions','rolePermissions'));
     }
     
     /**

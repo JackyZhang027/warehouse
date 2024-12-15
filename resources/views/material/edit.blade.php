@@ -10,17 +10,21 @@
 <form action="{{ route('material.update', $materialRequest->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update</button>
-    <div class="btn-group">
-        <button type="button" class="btn btn-primary"><i class="fas fa-download"></i> Download</button>
-        <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu" role="menu" style="">
-            <a class="dropdown-item" href="{{route('material.export', ['id'=>$materialRequest->id, 'type'=>'EXCEL'])}}"><i class="fas fa-file-excel text-success"></i> Excel</a>
-            <a class="dropdown-item" href="{{route('material.export', ['id'=>$materialRequest->id, 'type'=>'PDF'])}}" target="blank"><i class="fas fa-file-pdf text-danger"></i> PDF</a>
+    @can('spm-edit')
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update</button>
+    @endcan
+    @can('spm-download')
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="fas fa-download"></i> Download</button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu" role="menu" style="">
+                <a class="dropdown-item" href="{{route('material.export', ['id'=>$materialRequest->id, 'type'=>'EXCEL'])}}"><i class="fas fa-file-excel text-success"></i> Excel</a>
+                <a class="dropdown-item" href="{{route('material.export', ['id'=>$materialRequest->id, 'type'=>'PDF'])}}" target="blank"><i class="fas fa-file-pdf text-danger"></i> PDF</a>
+            </div>
         </div>
-    </div>
+    @endcan
     <hr/>
     <div class="row">
         <div class="col-3">
@@ -32,7 +36,8 @@
         <div class="col-3">
             <div class="form-group">
                 <label for="date">Tanggal SPM</label>
-                <input type="date" class="form-control" id="date" name="date" value="{{ $materialRequest->date->format('Y-m-d') }}" required>
+                <input type="date" class="form-control" id="date" name="date" value="{{ $materialRequest->date->format('Y-m-d') }}" 
+                    @unless(auth()->user()->can('spm-edit-date')) readonly @endunless required>
             </div>
         </div>
         <div class="col-3">

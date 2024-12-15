@@ -38,6 +38,9 @@ class ItemOutController extends Controller
             ->editColumn('warehouse_id', function ($row) {
                 return $row->warehouse->project;
             })
+            ->editColumn('date', function ($row) {
+                return $row->date->format('d-m-Y');
+            })
             ->editColumn('created_by', function ($row) {
                 return $row->createUser->name;
             })
@@ -130,7 +133,7 @@ class ItemOutController extends Controller
             })
             
             ->addColumn('out_date', function($row){
-                return $row->itemOut->date;
+                return $row->itemOut->date->format('d-m-Y');
             })
             
             ->addColumn('action', function($row){

@@ -14,6 +14,8 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseItemController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PagePasswordController;
 use App\Models\ItemArrival;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::get('/warehouse/search-items', [WarehouseItemController::class, 'searchItems'])->name('warehouse.items.search');
     Route::resource('warehouse', WarehouseController::class);
     Route::resource('uoms', UOMController::class);
     Route::resource('categories', ItemCategoryController::class);
@@ -63,7 +66,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/get-delivery-items', [DeliveryOrderController::class, 'getDeliveryItems'])->name('getDeliveryItems');
     
 
-    Route::get('/warehouse/search-items', [WarehouseItemController::class, 'searchItems'])->name('warehouse.items.search');
 
     Route::post('/arrival/search', [ItemArrivalController::class, 'searchData']);
     Route::post('/out/search', [ItemOutController::class, 'searchData']);
@@ -72,5 +74,12 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('sites', SiteController::class);
     Route::resource('announcement', AnnouncementController::class);
+    Route::resource('permissions', PermissionController::class)->middleware('password.required');
+
+
+    Route::get('/password-input', [PagePasswordController::class, 'show'])->name('password.input');
+    Route::post('/password-validate', [PagePasswordController::class, 'validatePassword'])->name('password.validate');
+
+
 
 });

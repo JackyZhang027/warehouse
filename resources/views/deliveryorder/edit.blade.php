@@ -16,8 +16,10 @@
         <div class="float-left">
             <h1>Edit Surat Jalan</h1>
         </div>
+        
+    
         <div class="float-right">
-            @can('item-create')
+            @can('delivery-note-download')
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary"><i class="fas fa-download"></i> Download</button>
                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
@@ -64,7 +66,7 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label for="date">Tanggal SJ</label>
-                        <input type="date" class="form-control" id="date" name="date" value="{{ $deliveryOrder->date }}" required>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ $deliveryOrder->date->format('Y-m-d') }}" required>
                     </div>
                 </div>
                 <div class="col-3">
@@ -86,7 +88,11 @@
                     </div>
                 </div>
             </div>
+            @can('delivery-note-edit')
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update</button>
+            @endcan
         </div>
+        
     </div>
 </form>
 <div class="card">
@@ -95,7 +101,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <h4 class="float-left">Daftar Barang</h4>
-                    <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#mdlAddItem"><i class="fas fa-plus"></i> Tambah</button>
+                    @can('delivery-note-item-add')
+                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#mdlAddItem"><i class="fas fa-plus"></i> Tambah</button>
+                    @endcan
                 </div>
                 <div class="col-md-12">
                     
@@ -111,7 +119,9 @@
                                 <th>PO Number</th>
                                 <th>PO Date</th>
                                 <th>Vendor/CP</th>
-                                <th></th>
+                                @can('delivery-note-item-delete')
+                                    <th></th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -126,13 +136,15 @@
                                     <td>{{$item->po_number}}</td>
                                     <td>{{$item->po_date}}</td>
                                     <td>{{$item->vendor}}</td>
-                                    <td>
-                                        @if ($item->received_qty == 0)
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('delivery.item.destroy', $item->id) }}', '');">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        @endif
-                                    </td>
+                                    @can('delivery-note-item-delete')
+                                        <td>
+                                            @if ($item->received_qty == 0)
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('delivery.item.destroy', $item->id) }}', '');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>
