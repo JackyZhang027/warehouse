@@ -241,21 +241,21 @@ class MaterialRequestController extends Controller
             $idsToKeep = [];
             foreach ($request->input('items', []) as $index => $itemData) {
                 $itemId = $submittedItemIds[$index] ?? null;
-
+            
                 if ($itemId && in_array($itemId, $existingItemIds)) {
                     // Update existing item
                     $materialRequestItem = MaterialRequestItem::findOrFail($itemId);
                     $materialRequestItem->update([
                         'item_id' => $itemData,
-                        'qty' => $request->input('qty')[$index],
-                        'date_needed' => $request->input('date_needed')[$index],
-                        'boq_code' => $request->input('boq')[$index],
-                        'description' => $request->input('description')[$index],
-                        'check_m' => $request->check_m[$index],
-                        'check_t' => $request->check_t[$index],
-                        'check_he' => $request->check_he[$index],
-                        'check_c' => $request->check_c[$index],
-                        'check_o' => $request->check_o[$index],
+                        'qty' => $request->input('qty')[$index] ?? 0,
+                        'date_needed' => $request->input('date_needed')[$index] ?? null,
+                        'boq_code' => $request->input('boq')[$index] ?? null,
+                        'description' => $request->input('description')[$index] ?? null,
+                        'check_m' => $request->check_m[$index] ?? 0,
+                        'check_t' => $request->check_t[$index] ?? 0,
+                        'check_he' => $request->check_he[$index] ?? 0,
+                        'check_c' => $request->check_c[$index] ?? 0,
+                        'check_o' => $request->check_o[$index] ?? 0,
                     ]);
                     $idsToKeep[] = $itemId;
                 } else {
@@ -263,15 +263,15 @@ class MaterialRequestController extends Controller
                     $newItem = MaterialRequestItem::create([
                         'mr_id' => $materialRequest->id,
                         'item_id' => $itemData,
-                        'qty' => $request->input('qty')[$index],
-                        'date_needed' => $request->input('date_needed')[$index],
-                        'boq_code' => $request->input('boq')[$index],
-                        'description' => $request->input('description')[$index],
-                        'check_m' => $request->check_m[$index],
-                        'check_t' => $request->check_t[$index],
-                        'check_he' => $request->check_he[$index],
-                        'check_c' => $request->check_c[$index],
-                        'check_o' => $request->check_o[$index],
+                        'qty' => $request->input('qty')[$index] ?? 0,
+                        'date_needed' => $request->input('date_needed')[$index] ?? null,
+                        'boq_code' => $request->input('boq')[$index] ?? null,
+                        'description' => $request->input('description')[$index] ?? null,
+                        'check_m' => $request->check_m[$index] ?? 0,
+                        'check_t' => $request->check_t[$index] ?? 0,
+                        'check_he' => $request->check_he[$index] ?? 0,
+                        'check_c' => $request->check_c[$index] ?? 0,
+                        'check_o' => $request->check_o[$index] ?? 0,
                     ]);
                     $idsToKeep[] = $newItem->id;
                 }
