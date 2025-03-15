@@ -126,7 +126,7 @@
             <tr class="item header" style="background-color: #dddddd; text-align: center;">
                 <td style="border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">NO</td>
                 <td style="width: 230px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">URAIAN</td>
-                <td style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">VOLUME</td>
+                <td style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">VOL</td>
                 <td style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">SATUAN</td>
                 <td style="width: 260px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">SPEC/TYPE/MERK</td>
                 <td style="width: 100px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">KODE BOQ</td>

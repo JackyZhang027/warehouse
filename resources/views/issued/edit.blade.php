@@ -16,8 +16,8 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" role="menu" style="">
-                        <a class="dropdown-item" href="{{route('delivery.export', ['id'=>$itemOut->id, 'type'=>'EXCEL'])}}"><i class="fas fa-file-excel text-success"></i> Excel</a>
-                        <a class="dropdown-item" href="{{route('delivery.export', ['id'=>$itemOut->id, 'type'=>'PDF'])}}" target="blank"><i class="fas fa-file-pdf text-danger"></i> PDF</a>
+                        <a class="dropdown-item" href="{{route('out.export', ['id'=>$itemOut->id, 'type'=>'EXCEL'])}}"><i class="fas fa-file-excel text-success"></i> Excel</a>
+                        <a class="dropdown-item" href="{{route('out.export', ['id'=>$itemOut->id, 'type'=>'PDF'])}}" target="blank"><i class="fas fa-file-pdf text-danger"></i> PDF</a>
                     </div>
                 </div>
             @endcan
@@ -77,7 +77,7 @@
                             <tr>
                                 <th>Item</th>
                                 <th>Qty</th>
-                                <th>Satuan</th>
+                                <th>Sat</th>
                                 <th>Keterangan</th>
                                 <th></th>
                             </tr>

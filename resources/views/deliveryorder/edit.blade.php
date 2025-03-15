@@ -115,7 +115,7 @@
                                 <th>Qty Surat Jalan</th>
                                 <th>SPM Qty</th>
                                 <th>Qty Diterima</th>
-                                <th>Satuan</th>
+                                <th>Sat</th>
                                 <th>PO Number</th>
                                 <th>PO Date</th>
                                 <th>Vendor/CP</th>

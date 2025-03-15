@@ -58,7 +58,7 @@
                     <tr>
                         <th rowspan="2" style="min-width: 35%; width: 35%;">Material</th>
                         <th rowspan="2" style="width: 10%;">Qty</th>
-                        <th rowspan="2" style="width: 10%;">Satuan</th>
+                        <th rowspan="2" style="width: 10%;">Sat</th>
                         <th rowspan="2" style="width: 10%;">Tanggal dibutuhkan</th>
                         <th rowspan="2" style="width: 10%;">No. BOQ</th>
                         <th colspan="5" class="text-center" style="width: 25%;">Keperluan</th>

@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::post('/arrival/search', [ItemArrivalController::class, 'searchData']);
     Route::post('/out/search', [ItemOutController::class, 'searchData']);
+    Route::get('/out/export/{id}/{type}', [ItemOutController::class, 'export'])->name('out.export');
 
 
 

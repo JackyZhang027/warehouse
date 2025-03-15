@@ -43,7 +43,7 @@
                     <tr>
                         <th rowspan="2" style="min-width: 350px">Material</th>
                         <th rowspan="2">Qty</th>
-                        <th rowspan="2">Satuan</th>
+                        <th rowspan="2">Sat</th>
                         <th rowspan="2">Tanggal dibutuhkan</th>
                         <th rowspan="2">No. BOQ</th>
                         <th colspan="5" class="text-center">Need For</th>

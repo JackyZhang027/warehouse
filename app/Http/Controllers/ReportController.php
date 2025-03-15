@@ -85,6 +85,7 @@ class ReportController extends Controller
                 AND i.category_id = ?
                 AND sc.warehouse_id = ?
                 GROUP BY i.id, i.code, i.name, u.name
+                ORDER BY i.name
             ", [$startDate, $startDate, $endDate, $startDate, $endDate, $endDate, $category_id, $warehouse_id]);
             $view = 'report.stock';
             $file_name = 'Laporan Stock Barang.xlsx';

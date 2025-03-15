@@ -11,6 +11,10 @@ use App\Models\WarehouseItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
+use Illuminate\Support\Facades\Cache;
+use App\Exports\ItemOutExport;
 class ItemOutController extends Controller
 {
     /**
@@ -358,6 +362,40 @@ class ItemOutController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()  
                 ->make(true);
+        }
+    }
+
+    public function export($id, $type)
+    {
+        $logo = Cache::remember('site_logo', 60 * 24, function () {
+            return Site::first()->logo_path ?? 'storage/images/logo.png';
+        });
+        $data = ItemOut::findOrFail($id);
+        if($type == 'EXCEL'){
+            return Excel::download(new ItemOutExport($data), 'Barang Keluar.xlsx');
+        }elseif($type == 'PDF'){
+            $mpdf = new Mpdf([
+                'format' => 'A4', // 'L' stands for landscape orientation
+                'margin_top' => 8, // Set top margin (in mm)
+                'margin_bottom' => 8, // Set bottom margin (in mm)
+                'margin_left' => 8, // Set left margin (in mm)
+                'margin_right' => 8, // Set right margin (in mm)
+                'tempDir' => __DIR__ . '/tmp', // Change tempDir if necessary
+                'debug' => true, // Enable debugging
+            ]);
+            
+            $mpdf->imageVars['logo'] = file_get_contents($_SERVER['DOCUMENT_ROOT'] .'/storage/'. $logo);
+            // Write the HTML content to the PDF
+            $html = view('report.PDF.out', ['out'=>$data])->render();
+            $mpdf->WriteHTML($html);
+            
+            $mpdf->SetHTMLFooter(
+                '<div style="font-size: 10px; text-align: left;">
+                    Dicetak oleh ' . auth()->user()->name . ' pada tanggal ' . now() . '
+                </div>'
+            );
+
+            return $mpdf->Output('Barang Keluar.pdf', 'I');
         }
     }
 

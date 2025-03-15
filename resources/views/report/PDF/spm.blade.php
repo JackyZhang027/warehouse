@@ -95,8 +95,8 @@
             <tr class="header" style="background-color: #dddddd; text-align: center;">
                 <td rowspan="2" style="border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">NO</td>
                 <td rowspan="2" style="width: 230px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">URAIAN</td>
-                <td rowspan="2" style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">VOLUME</td>
-                <td rowspan="2" style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">SATUAN</td>
+                <td rowspan="2" style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">VOL</td>
+                <td rowspan="2" style="width: 87px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">SAT</td>
                 <td rowspan="2" style="width: 260px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">SPEC/TYPE/MERK</td>
                 <td rowspan="2" style="width: 100px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">KODE BOQ</td>
                 <td rowspan="2" style="width: 120px; border: 1px solid black; text-align:center; font-weight:bold;" bgcolor="#ddddddd">TANGGAL<br/>DIBUTUHKAN</td>
