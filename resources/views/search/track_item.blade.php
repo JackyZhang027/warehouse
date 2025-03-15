@@ -9,11 +9,6 @@
         <div class="float-left">
             <h1>Cari Barang</h1>
         </div>
-        <div class="float-right">
-            @can('item-create')
-                <a class="btn btn-success mb-2" href="{{ route('material.create') }}"><i class="fa fa-plus"></i> Cari Barang</a>
-            @endcan
-        </div>
     </div>
 </div>
 @stop
