@@ -33,7 +33,7 @@ class TrackItemController extends Controller
         if ($filter) {
             $datas = MaterialRequest::with(['items', 'items.item', 'warehouse'])
                 ->whereHas('items.item', function ($query) use ($search_category, $filter) {
-                    $query->where($search_category === 'code' ? 'code' : 'name', $filter);
+                    $query->where($search_category === 'code' ? 'code' : 'name', 'like', "%{$filter}%");
                 })
                 ->when($warehouse_id, fn($query) => $query->where('warehouse_id', $warehouse_id))
                 ->get();
