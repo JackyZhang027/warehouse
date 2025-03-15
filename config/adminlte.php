@@ -370,6 +370,12 @@ return [
             'can' => ['view-report-item-in', 'view-report-delivery-note']
         ],
         [
+            'text'  =>  'Cari Informasi Barang',
+            'route' =>  'search.item',
+            'icon'  =>  'fas fa-fw fa-search',
+            'can'   => ['view-report-item-in'],
+        ],
+        [
             'text'  =>  'Penerimaan Barang',
             'route' =>  'arrival.index',
             'icon'  =>  'fas fa-fw fa-file-invoice',

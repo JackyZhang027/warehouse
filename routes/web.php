@@ -16,6 +16,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PagePasswordController;
+use App\Http\Controllers\TrackItemController;
 use App\Models\ItemArrival;
 use Illuminate\Support\Facades\Route;
 
@@ -66,12 +67,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/get-delivery-items', [DeliveryOrderController::class, 'getDeliveryItems'])->name('getDeliveryItems');
     
 
-
     Route::post('/arrival/search', [ItemArrivalController::class, 'searchData']);
     Route::post('/out/search', [ItemOutController::class, 'searchData']);
     Route::get('/out/export/{id}/{type}', [ItemOutController::class, 'export'])->name('out.export');
 
-
+    
+    Route::get('/search/item', [TrackItemController::class, 'index'])->name('search.item');
 
     Route::resource('sites', SiteController::class);
     Route::resource('announcement', AnnouncementController::class);
