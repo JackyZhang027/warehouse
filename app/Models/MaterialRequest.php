@@ -58,7 +58,7 @@ class MaterialRequest extends Model
             // Use a row-level lock to prevent race conditions
             $tracker = DB::table('sequence_trackers')
                 ->where('warehouse_id', $warehouseId)
-                ->where('sequence_format', $format)
+                // ->where('sequence_format', $format)
                 ->where('type', $type)
                 ->lockForUpdate() // Lock the row for update
                 ->first();
