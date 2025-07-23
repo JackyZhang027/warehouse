@@ -90,6 +90,37 @@
         </table>
     </div>
 </div>
+<div class="card">
+    <div class="card-header">
+        <h3>Stock Barang</h3>
+    </div>
+    <div class="card-body">
+        <table id="tblSPM" class="table table-bordered data-table" style="width: 100%">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Gudang</th>
+                    <th>Kode Barang</th>
+                    <th>Nama Barang</th>
+                    <th>Stock Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($stocks as $data)
+                    <tr>
+                        <td>{{ $data->warehouse->spk_number }}</td>
+                        <td>{{ $data->item->code }}</td>
+                        <td>{{ $data->item->name }}</td>
+                        <td>{{ $data->total_qty }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center">Tidak ada data</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @stop
 
 @section('css')

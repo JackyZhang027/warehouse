@@ -7,6 +7,7 @@ use App\Models\Warehouse;
 use App\Models\MaterialRequest;
 use App\Models\MaterialRequestItem;
 use App\Models\Item;
+use App\Models\WarehouseItem;
 
 
 class TrackItemController extends Controller
@@ -29,6 +30,7 @@ class TrackItemController extends Controller
         }
 
         $datas = collect(); // Ensure it's always iterable
+        $stocks = collect(); // Ensure it's always iterable
 
         if ($filter) {
             $datas = MaterialRequest::with(['items', 'items.item', 'warehouse'])
@@ -37,9 +39,18 @@ class TrackItemController extends Controller
                 })
                 ->when($warehouse_id, fn($query) => $query->where('warehouse_id', $warehouse_id))
                 ->get();
+
+            $stocks = WarehouseItem::with(['item', 'warehouse']) // eager load item details
+                ->whereHas('item', function ($query) use ($search_category, $filter) {
+                    $query->where($search_category === 'code' ? 'code' : 'name', 'like', "%{$filter}%");
+                })
+                ->selectRaw('item_id, warehouse_id, SUM(qty) as total_qty')
+                ->groupBy('item_id', 'warehouse_id')
+                ->get();
+                
         }
 
-        return view('search.track_item', compact('warehouses', 'datas'));
+        return view('search.track_item', compact('warehouses', 'datas', 'stocks'));
     }
 
 }
