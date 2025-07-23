@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="col-12">
-            <table id="tblItem" class="table table-bordered data-table table-striped" style="width: 100%">
+            <table id="tblItem" class="table table-bordered table-striped sticky-header" style="width: 100%">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th rowspan="2" style="min-width: 35%; width: 35%;">Material</th>
@@ -156,6 +156,29 @@
     }
     .qty {
         text-align: right;
+    }
+    
+    /* Ensure the table uses border-collapse */
+    .sticky-header {
+        border-collapse: separate;
+    }
+
+    /* Sticky for the first row */
+    .sticky-header thead tr:nth-child(1) th {
+        position: sticky;
+        top: 0;
+        z-index: 25;
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Sticky for the second row */
+    .sticky-header thead tr:nth-child(2) th {
+        position: sticky;
+        top: 53px; /* adjust depending on your header height */
+        z-index: 19;
+        background-color: #007bff;
+        color: white;
     }
 </style>
 @stop

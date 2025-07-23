@@ -544,6 +544,16 @@ return [
                     'asset' => true,
                     'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
                 ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js',
+                ],
             ],
         ],
         'Select2' => [
@@ -606,6 +616,7 @@ return [
                 ],
             ],
         ],
+        
     ],
 
     /*

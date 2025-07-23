@@ -35,17 +35,22 @@
 @stop
 
 @section('css')
-
 @stop
 
 @section('js')
+
 <script type="text/javascript">
+
     var table;
     $(function () {
           
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
+            fixedHeader: true,
+            scrollY: "60vh",
+            scrollCollapse: true,
+
             ajax: "{{ route('warehouse.index') }}",
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
