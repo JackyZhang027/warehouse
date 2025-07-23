@@ -245,7 +245,6 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    console.log(response)
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -253,9 +252,10 @@
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000
-                    });
-                    // Redirect or perform other actions on success
+                        timer: 1000,
+                        }).then(function() {
+                            window.location.href = "{{route('warehouse.index')}}";
+                        });
                 },
                 error: function(response) {
                     Swal.fire({

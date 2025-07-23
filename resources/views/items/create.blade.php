@@ -107,7 +107,7 @@
                     timer: 1000
                 }).then(function() {
                     window.location.href = "{{route('items.index')}}";
-                });;
+                });
             },
             error: function(response) {
                 console.log(response)
