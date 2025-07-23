@@ -52,6 +52,7 @@ class UserController extends Controller
                     
                     if (auth()->user()->can('user-delete')) {
                         $deleteBtn = '<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(\''. route('users.destroy', $row->id) .'\', \'tblUser\')"><i class="fas fa-trash-alt"></i> </button>';
+                        
                     }
                     return $editBtn.$deleteBtn;
                 })
@@ -194,11 +195,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+        DB::beginTransaction();
+
+        try {
+            $user = User::findOrFail($id); // throws 404 if not found
+
+            $user->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'User deleted successfully!'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'msg' => 'User not found.'
+            ], 404);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Delete user failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'msg' => 'Failed to delete the user. Please try again later.'
+            ], 500);
+        }
     }
+
 }
 

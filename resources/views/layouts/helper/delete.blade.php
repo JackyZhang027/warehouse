@@ -18,7 +18,6 @@
                         _method: 'DELETE'
                     },
                     success: function(response) {
-                        console.log(response)
                         if (response.success){
                             if(table != ''){
                                 $('#' + table).DataTable().ajax.reload();
@@ -47,7 +46,6 @@
 
                     },
                     error: function(xhr) {
-                        console.log(xhr)
                         Swal.fire(
                             'Error!',
                             'There was a problem deleting the record.',
