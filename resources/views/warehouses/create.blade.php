@@ -30,6 +30,12 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label for="code">Kode Gudang</label>
+                                <input type="text" class="form-control" id="code" name="code" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label for="spk_number">SPK Number</label>
                                 <input type="text" class="form-control" id="spk_number" name="spk_number" required>
                             </div>

@@ -68,6 +68,7 @@ class WarehouseController extends Controller
         $request->validate([
             'owner' => 'required|string|max:255',
             'project' => 'required|string|max:255',
+            'code' => 'required|string|max:255',
             'spk_number' => 'required|string|max:255',
             'location' => 'required|string',
             'logistic' => 'required|string|max:255',
@@ -114,6 +115,7 @@ class WarehouseController extends Controller
         $request->validate([
             'owner' => 'required|string|max:255',
             'project' => 'required|string|max:255',
+            'code' => 'required|string|max:255',
             'spk_number' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'logistic' => 'nullable|string|max:255',

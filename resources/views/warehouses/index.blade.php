@@ -23,7 +23,8 @@
             <th style="width: 20px;">No</th>
             <th>Owner</th>
             <th>Project</th>
-            <th>SPK Number</th>
+            <th>Kode Gudang</th>
+            <th>Kode Proyek</th>
             <th>Location</th>
             <th width="100px">Action</th>
         </tr>
@@ -50,6 +51,7 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'owner', name: 'owner'},
                 {data: 'project', name: 'project'},
+                {data: 'code', name: 'code'},
                 {data: 'spk_number', name: 'spk_number'},
                 {data: 'location', name: 'location'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

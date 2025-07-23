@@ -36,9 +36,14 @@
                 <div class="invalid-feedback">Project is required.</div>
             </div>
             <div class="form-group">
-                <label for="spk_number">SPK Number</label>
+                <label for="code">Kode Gudang</label>
+                <input type="text" class="form-control" id="code" name="code" value="{{$warehouse->code}}" required/>
+                <div class="invalid-feedback">Kode Gudang is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="spk_number">Kode Proyek</label>
                 <input type="text" class="form-control" id="spk_number" name="spk_number" value="{{$warehouse->spk_number}}" required/>
-                <div class="invalid-feedback">SPK Number is required.</div>
+                <div class="invalid-feedback">Kode Proyek is required.</div>
             </div>
             <div class="form-group">
                 <label for="location">Location</label>
