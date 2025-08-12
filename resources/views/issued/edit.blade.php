@@ -176,11 +176,12 @@
 $(document).ready(function() {
     $('#search-item').on('keyup', function() {
         let keyword = $(this).val();
+        let warehouse_id = {{ $itemOut->warehouse_id }};
         if (keyword.length >= 2) {
             $.ajax({
                 url: "{{ route('warehouse.items.search') }}",
                 type: "GET",
-                data: { keyword: keyword },
+                data: { keyword: keyword, warehouse_id: warehouse_id },
                 success: function(data) {
                     let tableBody = $('#items-table-body');
                     tableBody.empty();
