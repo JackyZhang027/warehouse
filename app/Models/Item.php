@@ -10,18 +10,18 @@ use Spatie\Activitylog\LogOptions;
 class Item extends Model
 {
     use HasFactory, LogsActivity;
-    protected $fillable = ['code', 'name', 'category_id', 'uom_id', 'description'];
+    protected $fillable = ['code', 'code_2', 'name', 'category_id', 'uom_id', 'description'];
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()
-        ->logFillable();
+        return LogOptions::defaults()->logFillable();
     }
 
     public function category()
     {
         return $this->belongsTo(ItemCategory::class, 'category_id');
     }
+
     public function uom()
     {
         return $this->belongsTo(UOM::class, 'uom_id');

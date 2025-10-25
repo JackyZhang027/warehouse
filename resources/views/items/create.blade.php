@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Create Item')
+@section('title', 'Buat Barang Baru')
 
 @section('content_header')
-<h1>New Item</h1>
+<h1>Barang Baru</h1>
 @stop
 
 @section('content')
@@ -14,19 +14,19 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="code">Item Code</label>
+                            <label for="code">Kode Barang</label>
                             <input type="text" class="form-control" id="code" name="code" required>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="name">Item Name</label>
+                            <label for="name">Nama Barang</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="category_id">Category</label>
+                            <label for="category_id">Kategori</label>
                             <x-adminlte-select2 name="category_id" required>
                                 @foreach($categories as $data)
                                     <option value="{{ $data->id }}" {{ old('category_id') == $data->id ? 'selected' : '' }}>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="category_id">Unit of Measure</label>
+                            <label for="category_id">Satuan</label>
                             <x-adminlte-select2 name="uom_id" required>
                                 @foreach($uoms as $data)
                                     <option value="{{ $data->id }}" {{ old('uom_id') == $data->id ? 'selected' : '' }}>
@@ -46,6 +46,12 @@
                                     </option>
                                 @endforeach
                             </x-adminlte-select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="code_2">Kode Barang Mutasi</label>
+                            <input type="text" class="form-control" id="code_2" name="code_2" required>
                         </div>
                     </div>
                     <div class="col-md-12">

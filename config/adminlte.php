@@ -366,6 +366,12 @@ return [
             'can'   => ['item-out-list'],
         ],
         [
+            'text'  =>  'Mutasi Barang',
+            'route' =>  'stock_movements.index',
+            'icon'  =>  'fas fa-fw fa-exchange-alt',
+            'can'   => ['item-out-list'],
+        ],
+        [
             'header' => 'Laporan',
             'can' => ['view-report-item-in', 'view-report-delivery-note']
         ],

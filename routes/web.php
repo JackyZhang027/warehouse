@@ -17,13 +17,12 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PagePasswordController;
 use App\Http\Controllers\TrackItemController;
+use App\Http\Controllers\StockMovementController;
 use App\Models\ItemArrival;
 use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
-
-
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
@@ -82,6 +81,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/password-input', [PagePasswordController::class, 'show'])->name('password.input');
     Route::post('/password-validate', [PagePasswordController::class, 'validatePassword'])->name('password.validate');
 
+    // Stock Movement Routes
+    Route::resource('stock_movements', StockMovementController::class);
 
 
 });

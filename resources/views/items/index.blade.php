@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Items')
+@section('title', 'Barang')
 
 @section('content_header')
 
@@ -11,7 +11,7 @@
         </div>
         <div class="float-right">
             @can('item-create')
-                <a class="btn btn-success mb-2" href="{{ route('items.create') }}"><i class="fa fa-plus"></i> Create New Item</a>
+                <a class="btn btn-success mb-2" href="{{ route('items.create') }}"><i class="fa fa-plus"></i> Buat Barang Baru </a>
             @endcan
         </div>
     </div>
@@ -23,11 +23,12 @@
     <thead class="bg-primary text-white">
         <tr>
             <th style="width: 20px;">No</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>UOM</th>
+            <th>Kode Barang</th>
+            <th>Kode Barang Mutasi</th>
+            <th>Nama</th>
+            <th>Deskripsi</th>
+            <th>Kategori</th>
+            <th>Satuan</th>
             <th width="100px">Action</th>
         </tr>
     </thead>
@@ -44,7 +45,6 @@
 <script type="text/javascript">
     var table;
     $(function () {
-          
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
@@ -52,6 +52,7 @@
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'code', name: 'code'},
+                {data: 'code_2', name: 'code_2'},
                 {data: 'name', name: 'name'},
                 {data: 'description', name: 'description'},
                 {data: 'category_id', name: 'category_id'},

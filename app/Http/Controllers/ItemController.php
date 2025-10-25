@@ -90,6 +90,7 @@ class ItemController extends Controller
     {
         $request->validate([
             'code' => 'required|string|max:255|unique:items,code',
+            'code_2' => 'string|max:255',
             'name' => 'required|string|max:255|unique:items,name',
             'description' => 'required|string',
             'category_id' => 'required|exists:item_categories,id',
@@ -127,6 +128,7 @@ class ItemController extends Controller
         // Validate the incoming request data
         $request->validate([
             'code' => 'required|string|max:255|unique:items,code,'.$id,
+            'code_2' => 'string|max:255',
             'name' => 'required|string|max:255|unique:items,name,'.$id,
             'description' => 'required|string',
             'category_id' => 'required|exists:item_categories,id',
@@ -160,6 +162,7 @@ class ItemController extends Controller
         $items = Item::query()
             ->where('name', 'like', '%' . $search . '%')
             ->orWhere('code', 'like', '%' . $search . '%')
+            ->orWhere('code_2', 'like', '%' . $search . '%')
             ->paginate($perPage);
 
         return response()->json([
@@ -167,6 +170,7 @@ class ItemController extends Controller
                 return [
                     'id' => $item->id,
                     'code' => $item->code,
+                    'code_2' => $item->code_2,
                     'text' => $item->code . ' - ' . $item->name,
                     'description' => $item->description,
                     'uom' => $item->uom->name ?? 'N/A' 
