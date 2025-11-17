@@ -239,7 +239,6 @@ class DeliveryOrderController extends Controller
             DB::commit();
             return redirect()->route('delivery.edit', $materialRequest->id)->with('success', 'Surat Jalan Berhasil dibuat, silahkan tambahj.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
             return redirect()->route('delivery.create')->with('error', 'Gagal membuat Surat Jalan !');
         }
@@ -283,7 +282,6 @@ class DeliveryOrderController extends Controller
             return redirect()->route('delivery.edit', $id)->with('success', 'Barang Berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return redirect()->route('delivery.edit', $id)->with('error', 'Gagal menambahkan barang.');
         }
     }

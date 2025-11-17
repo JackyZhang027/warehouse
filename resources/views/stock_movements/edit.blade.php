@@ -50,7 +50,33 @@
     </div>
 
     <h4 class="mt-4">Barang</h4>
+    <div class="d-flex flex-wrap w-100 mb-3">
+        <div class="card p-2 mr-3 mb-2" style="flex: 1 1 250px;">
+            <h6 class="mb-2 font-weight-bold">Informasi Mutasi</h6>
+            <ul class="mb-0 pl-3">
+                <li>Pilih gudang asal terlebih dahulu</li>
+                <li>Jika ada barang yang dipilih, gudang asal tidak dapat diubah</li>
+                <li>Qty barang harus lebih dari 0</li>
+                <li>Qty barang harus lebih kecil atau sama dengan stok di gudang asal</li>
+            </ul>
+        </div>
 
+        <div class="card p-2 mr-3 mb-2" style="flex: 1 1 250px;">
+            <h6 class="mb-2 font-weight-bold">Surat Jalan</h6>
+            <ul class="mb-0 pl-3">
+                <li>Surat jalan dapat dibuat setelah menyimpan mutasi</li>
+                <li>Penerimaan barang dapat dilakukan setelah membuat surat jalan melalui tombol <strong>"Buat Surat Jalan"</strong></li>
+            </ul>
+        </div>
+
+        <div class="card p-2 mb-2" style="flex: 1 1 250px;">
+            <h6 class="mb-2 font-weight-bold">Stock Update</h6>
+            <ul class="mb-0 pl-3">
+                <li>Stock barang akan berkurang di gudang asal setelah membuat surat jalan</li>
+                <li>Stock barang akan bertambah di gudang tujuan setelah penerimaan barang</li>
+            </ul>
+        </div>
+    </div>
     <table class="table table-bordered" id="lines-table">
         <thead class="thead-light">
             <tr>
@@ -82,7 +108,7 @@
         </tbody>
     </table>
 
-    <button type="button" class="btn btn-secondary mb-3" id="addLineBtn">Add Line</button>
+    <button type="button" class="btn btn-secondary mb-3" id="addLineBtn">Tambah Barang</button>
     <button type="submit" class="btn btn-primary mb-3">Update</button>
 </form>
 @endsection

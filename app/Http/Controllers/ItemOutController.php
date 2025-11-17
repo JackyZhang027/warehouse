@@ -209,7 +209,6 @@ class ItemOutController extends Controller
             DB::commit();
             return redirect()->route('out.edit', $materialRequest->id)->with('success', 'Informasi Barang Keluar Berhasil dibuat, silahkan tambah Barang.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
             return redirect()->route('out.create')->with('error', 'Gagal membuat barang keluar !');
         }
