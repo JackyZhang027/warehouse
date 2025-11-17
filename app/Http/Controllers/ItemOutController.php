@@ -300,9 +300,10 @@ class ItemOutController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ItemOut $itemOut)
+    public function destroy(ItemOut $out)
     {
-        //
+        $out->delete();
+        return response()->json(['success'=>true, 'msg' => 'Berahasi menghapus data!']);
     }
     public function destroyItems($id)
     {
@@ -335,11 +336,11 @@ class ItemOutController extends Controller
             $itemOutDetail->delete();
 
             DB::commit();
-            return response()->json(['status' => 'success', 'message' => 'Barang Berhasil dihapus.']);
+            return response()->json(['success' => true, 'msg' => 'Barang Berhasil dihapus.']);
         } catch (\Exception $e) {
             DB::rollBack();
             // Optionally log the error or handle it as needed
-            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus barang. ' . $e]);
+            return response()->json(['success' => false, 'msg' => 'Gagal menghapus barang. ' . $e]);
         }
     }
 
